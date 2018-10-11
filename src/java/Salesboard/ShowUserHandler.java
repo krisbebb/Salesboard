@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.*;
 
 
@@ -63,7 +64,7 @@ ShowUserHandler()
             }
         finally {
             conn.close();
-        }  
+          }  
           return "/userHome.jsp";
       }
       else if(req.getMethod().equalsIgnoreCase("POST"))

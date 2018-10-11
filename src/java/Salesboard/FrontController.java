@@ -100,7 +100,7 @@ public class FrontController extends HttpServlet {
   {
      //Here we define which java classes handle which requests
         pathsToHandlers.put("/getUser.jsp", "Salesboard.EditUserHandler");
-        pathsToHandlers.put("/showUser.jsp", "Salesboard.ShowUserHandler");
+        pathsToHandlers.put("/showUser", "Salesboard.ShowUserHandler");
 //        pathsToHandlers.put("userHome.jsp", "Salesboard.userHandler");
 //     pathsToHandlers.put("/movieDetails", "Salesboard.MovieDetails");
      
@@ -151,6 +151,7 @@ public class FrontController extends HttpServlet {
           System.out.println("viewPath is: " + viewPath + "\n");
         rd.forward(request, response);
       }
+      System.out.println("We have null and got here");
 //      this.getServletContext().getRequestDispatcher("/view.jsp");
      
       
