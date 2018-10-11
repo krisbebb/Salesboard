@@ -12,6 +12,7 @@
         <title>Show User</title>
     </head>
     <body>
+        <h1> The customer is ${userBean.username} </h1>
            <form action = "showUser.jsp" method = "GET">
          First Name: <input type = "text" name = "username">
          <input type = "submit" value = "Submit" />
@@ -21,6 +22,7 @@
         <jsp:getProperty name="userBean" property="age" />
         <jsp:getProperty name="userBean" property="address" />
 
+        
 
     </body>
 </html>
