@@ -12,7 +12,10 @@
         <title>Show User</title>
     </head>
     <body>
-        
+           <form action = "showUser.jsp" method = "GET">
+         First Name: <input type = "text" name = "username">
+         <input type = "submit" value = "Submit" />
+      </form> 
         <jsp:useBean id="userBean" class="Salesboard.userBean" scope="request"/>
         <jsp:getProperty name="userBean" property="username" />
         <jsp:getProperty name="userBean" property="age" />
