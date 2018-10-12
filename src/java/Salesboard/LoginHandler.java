@@ -34,6 +34,7 @@ LoginHandler()
    {
       if(req.getMethod().equalsIgnoreCase("GET"))
       {
+           System.out.println("WE are in loginHandler GET");
          //Query data access class for item to be edited
          //attach item to request
          //return path to view (JSP page) (eg. return “./editView.jsp”; 
@@ -81,12 +82,53 @@ LoginHandler()
       }
       else if(req.getMethod().equalsIgnoreCase("POST"))
       {
+                  System.out.println("WE are in loginHandler POST");
          //Obtain request parameters which will be the new values for
          //item being edited
          //Use the data access class to update the item being edited.
          //send a redirect to the client for the next page in the app (eg. a report page).
          //return null so the front controller knows that a redirect has been sent
          //and doesnt try to forward the request to a view.
+           Connection conn = getConnection(false);
+        try {
+             HttpSession session = req.getSession();
+            String name = (String) req.getParameter("username");
+            session.setAttribute("sessionuser", name);
+            System.out.println("sessionuser: " + session.getAttribute("sessionuser"));
+            System.out.println("request parameter username: " + name);
+
+         PreparedStatement sellerItems = conn.prepareStatement("select * from items " + 
+                    "where seller = ?");
+            sellerItems.setString(1, name);
+            ResultSet rs = sellerItems.executeQuery();
+            List<itemBean> sellerList = new ArrayList<>();
+            while (rs.next()) {
+                System.out.println("Printing result...");
+                int id = rs.getInt("id");
+                String seller = rs.getString("seller");
+                String item = rs.getString("item");
+                String description = rs.getString("description");
+                int quantity = rs.getInt("quantity");
+                int price = rs.getInt("price");
+               
+                itemBean itemB = new itemBean(id, seller, item, description,quantity, price);
+                
+                      sellerList.add(itemB);
+                System.out.println("\tID: " + itemB.getId() +
+                        ", seller: " + itemB.getSeller() + 
+                       ", item: " + itemB.getItem() +
+                        ", description: " + itemB.getDescription() + 
+                        ", quantity: " + itemB.getQuantity() +
+                        ", price: " + itemB.getPrice());
+            }
+              req.setAttribute("sellerList", sellerList);
+        }
+        finally {
+            conn.close();
+          }  
+          return "/sellerReport.jsp";
+ 
+       
       }
        return null;
    }

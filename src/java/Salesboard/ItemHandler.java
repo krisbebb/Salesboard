@@ -21,11 +21,11 @@ import javax.servlet.http.*;
  *
  * @author kris
  */
-public class SellerHandler implements Handler
+public class ItemHandler implements Handler
 {
    //It needs a no argument constructor so the front controller 
    //can instantiate it using reflection
-SellerHandler()
+ItemHandler()
    { }
  
  @Override
@@ -34,21 +34,14 @@ SellerHandler()
    {
       if(req.getMethod().equalsIgnoreCase("GET"))
       {
+      
          //Query data access class for item to be edited
          //attach item to request
          //return path to view (JSP page) (eg. return “./editView.jsp”; 
          //In this case the editView.jsp would use the item
          //attached to the request to write out a form prepopulated
-         //with the values for the item.
-//        Connection conn = getConnection(false);
-//        try {
-//             HttpSession session = req.getSession();
-//            String name = (String) req.getParameter("username");
-//            session.setAttribute("sessionuser", name);
-//            System.out.println("sessionuser: " + session.getAttribute("sessionuser"));
-//            System.out.println("request parameter username: " + name);
-//
-//            PreparedStatement sellerItems = conn.prepareStatement("select * from items " + 
+         //with the values for the item.Connection conn = getConnection(false);
+          //         PreparedStatement sellerItems = conn.prepareStatement("select * from items " + 
 //                    "where seller = ?");
 //            sellerItems.setString(1, name);
 //            ResultSet rs = sellerItems.executeQuery();
@@ -73,29 +66,73 @@ SellerHandler()
 //                        ", price: " + itemB.getPrice());
 //            }
 //              req.setAttribute("sellerList", sellerList);
-//            }
-//        finally {
-//            conn.close();
-//          }  
-//          return "/allItemsReport.jsp";
-          System.out.println("WE are in sellerHandler GET");
+          
+           System.out.println("WE are in itemHandler GET");
+           Connection conn = getConnection(false); try {
+             HttpSession session = req.getSession();
+            String name = (String)session.getAttribute("sessionuser");
+            String action = null;
+          
+            if (req.getParameter("edit")!=null) {
+                action = "edit";
+            } else if (req.getParameter("add")!=null) {
+                action = "add";
+            } else if (req.getParameter("delete")!=null) {
+                action = "delete";
+            }
+            System.out.println("action is: " + action);
+            System.out.println("sessionuser parameter: " + name);
+            
+            if (action == "edit") {
+//                String item = req.getParameter("item");
+//                String description = req.getParameter("description");  
+//                int quantity = Integer.parseInt(req.getParameter("quantity"));  
+//                int price = Integer.parseInt(req.getParameter("price"));
+//                
+//                PreparedStatement editItem = conn.prepareStatement("update items "
+//                    + "set item=?, description=?, quantity=?, price=?"
+//                    + "where id = ?");
+//            editItem.setString(1, item);
+//            editItem.setString(2, description);
+//            editItem.setInt(3, quantity);
+//            editItem.setInt(4, price);
+                // redirect to edit item details?
+                return "/addItem.jsp";
+            }
+            
+            if (action == "add"){
+                // redirect to edit item details?
+            }
+            
+            if (action == "delete"){
+                
+            }
+
+        }
+        finally {
+            conn.close();
+          }  
+           
       }
       else if(req.getMethod().equalsIgnoreCase("POST"))
       {
+           System.out.println("WE are in itemHandler POST");
          //Obtain request parameters which will be the new values for
          //item being edited
          //Use the data access class to update the item being edited.
          //send a redirect to the client for the next page in the app (eg. a report page).
          //return null so the front controller knows that a redirect has been sent
          //and doesnt try to forward the request to a view.
-          
-          //update item, return to sellerreport.jsp
-          System.out.println("WE are in sellerHandler POST");
-      }
-       return "sellerReport.jsp";
+             HttpSession session = req.getSession();
+            String name = (String)session.getAttribute("sessionuser");
+           
+//        RequestDispatcher dispatch = req.getRequestDispatcher("sellerReport?username=" + name);
+//        dispatch.forward(req, resp);
+            return "login?username=" + name;
    }
-
-    
+         return null;
+   
+   }
     private Connection getConnection(boolean createDatabase) throws SQLException {
     checkDriverLoaded();
     String attributes = "";

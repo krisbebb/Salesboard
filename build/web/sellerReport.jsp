@@ -21,7 +21,7 @@
       <TH>Description</th>
       <TH>Quantity</th>
       <TH>Price</th>
-      <th>Edit</th>
+      <th>Actions</th>
         </tr>
       <c:forEach items="${sellerList}" var="current">
         <tr>
@@ -30,15 +30,21 @@
             <td><c:out value="${current.description}" /></td>
             <td><c:out value="${current.quantity}" /></td>
             <td><c:out value="${current.price}" /></td>
-            <td><form action="editItem" method="POST">
+            <td><form action="editItem" method="GET">
                 <input type="hidden" name="itemId" value="${current.id}" />
-                <input type="submit" value="edit" name="edit"></td>
+                <input type="submit" value="edit" name="edit">
+           
+                <input type="submit" value="delete" name="delete"></td>
             </form>
+                </td>
         </tr>
       </c:forEach>
     </table>
 
-        <p> add item </p>
+        <form action="editItem" method="GET">
+               
+                <input type="submit" value="add item" name="add"></td>
+            </form>
         
       <jsp:include page="./nav.jsp" />
 
