@@ -28,6 +28,6 @@
                 </td>
         </tr>
         
-       
+         <jsp:include page="./nav.jsp" />
 </body>
 </html>

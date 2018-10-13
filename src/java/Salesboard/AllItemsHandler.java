@@ -35,12 +35,7 @@ AllItemsHandler()
       if(req.getMethod().equalsIgnoreCase("GET"))
       {
            System.out.println("WE are in allItemsHandler GET");
-         //Query data access class for item to be edited
-         //attach item to request
-         //return path to view (JSP page) (eg. return “./editView.jsp”; 
-         //In this case the editView.jsp would use the item
-         //attached to the request to write out a form prepopulated
-         //with the values for the item.
+       
         Connection conn = getConnection(false);
         try {
              HttpSession session = req.getSession();
@@ -80,12 +75,7 @@ AllItemsHandler()
       else if(req.getMethod().equalsIgnoreCase("POST"))
       {
                System.out.println("WE are in allItemsHandler POST");
-         //Obtain request parameters which will be the new values for
-         //item being edited
-         //Use the data access class to update the item being edited.
-         //send a redirect to the client for the next page in the app (eg. a report page).
-         //return null so the front controller knows that a redirect has been sent
-         //and doesnt try to forward the request to a view.
+         
        Connection conn = getConnection(false);
         try {
              HttpSession session = req.getSession();

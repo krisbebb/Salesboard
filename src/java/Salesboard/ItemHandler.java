@@ -87,19 +87,7 @@ ItemHandler()
             System.out.println("sessionuser parameter: " + name);
             
             if (action == "edit") {
-//                String item = req.getParameter("item");
-//                String description = req.getParameter("description");  
-//                int quantity = Integer.parseInt(req.getParameter("quantity"));  
-//                int price = Integer.parseInt(req.getParameter("price"));
-//                
-//                PreparedStatement editItem = conn.prepareStatement("update items "
-//                    + "set item=?, description=?, quantity=?, price=?"
-//                    + "where id = ?");
-//            editItem.setString(1, item);
-//            editItem.setString(2, description);
-//            editItem.setInt(3, quantity);
-//            editItem.setInt(4, price);
-                // redirect to edit item details?
+//               
                 int id = Integer.parseInt(req.getParameter("itemId"));
                 System.out.println("ItemId is: " + id);
                  PreparedStatement getItem = conn.prepareStatement("select * from items "
@@ -163,12 +151,7 @@ ItemHandler()
       else if(req.getMethod().equalsIgnoreCase("POST"))
       {
            System.out.println("WE are in itemHandler POST");
-         //Obtain request parameters which will be the new values for
-         //item being edited
-         //Use the data access class to update the item being edited.
-         //send a redirect to the client for the next page in the app (eg. a report page).
-         //return null so the front controller knows that a redirect has been sent
-         //and doesnt try to forward the request to a view.
+         
             Connection conn = getConnection(false); 
              HttpSession session = req.getSession();
             String name = (String)session.getAttribute("sessionuser");
