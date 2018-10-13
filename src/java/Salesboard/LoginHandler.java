@@ -41,6 +41,10 @@ LoginHandler()
              HttpSession session = req.getSession();
             String name = (String) req.getParameter("username");
             session.setAttribute("sessionuser", name);
+             List<itemBean> cartList = new ArrayList<>();
+             session.setAttribute("cartList", cartList);
+            System.out.println("Created cartList");
+            
             System.out.println("sessionuser: " + session.getAttribute("sessionuser"));
             System.out.println("request parameter username: " + name);
 
@@ -84,6 +88,9 @@ LoginHandler()
              HttpSession session = req.getSession();
             String name = (String) req.getParameter("username");
             session.setAttribute("sessionuser", name);
+           
+           
+            
             System.out.println("sessionuser: " + session.getAttribute("sessionuser"));
             System.out.println("request parameter username: " + name);
 
