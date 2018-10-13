@@ -9,11 +9,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Seller Report </title>
+        <title>Home </title>
     </head>
     <body>
-        <h1>Seller report for ${sessionScope["sessionuser"]} </h1>
-        
+        <h1>Home Page for ${sessionScope["sessionuser"]} </h1>
+        <h2> Seller Report </h2>
         <table>
         <tr>
       <TH>Id</th>
@@ -45,6 +45,23 @@
                
                 <input type="submit" value="add item" name="add"></td>
             </form>
+        
+        <h2>Customer Report </h2>
+         <table>
+        <tr>
+      <TH>Buyer</th>
+      <TH>Total Spent</th>
+     
+        </tr>
+      <c:forEach items="${buyerList}" var="current">
+        <tr>
+            <td><c:out value="${current.buyer}" /></td>
+            <td><c:out value="${current.total_spent}" /></td>
+           
+        </tr>
+      </c:forEach>
+    </table>
+
         
       <jsp:include page="./nav.jsp" />
 

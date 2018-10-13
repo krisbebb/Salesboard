@@ -19,7 +19,7 @@
             <td><c:out value="${itemBean.description}" /></td>
             <td><c:out value="${itemBean.quantity}" /></td>
             <td><c:out value="${itemBean.price}" /></td>
-            <td><form action="buyItem" method="GET">
+            <td><form action="buyItem" method="POST">
                 <input type="hidden" name="itemId" value="${itemBean.id}" />
                 <input type="submit" value="buy" name="action">
            
@@ -28,6 +28,6 @@
                 </td>
         </tr>
         
-       
+         <jsp:include page="./nav.jsp" />
 </body>
 </html>
