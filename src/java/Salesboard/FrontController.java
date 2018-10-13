@@ -100,12 +100,13 @@ public class FrontController extends HttpServlet {
   {
      //Here we define which java classes handle which requests
         pathsToHandlers.put("/userDetails.jsp", "Salesboard.EditUserHandler");
-        pathsToHandlers.put("/showUser", "Salesboard.ShowUserHandler");
+//        pathsToHandlers.put("/showUser", "Salesboard.ShowUserHandler");
         pathsToHandlers.put("/login", "Salesboard.LoginHandler");
         pathsToHandlers.put("/allItemsReport", "Salesboard.AllItemsHandler");
         pathsToHandlers.put("/sellerReport", "Salesboard.SellerHandler");
         pathsToHandlers.put("/editItem", "Salesboard.ItemHandler");
         pathsToHandlers.put("/viewItem", "Salesboard.ItemHandler");
+        pathsToHandlers.put("/buyItem", "Salesboard.CartHandler");
 //        pathsToHandlers.put("userHome.jsp", "Salesboard.userHandler");
 //     pathsToHandlers.put("/movieDetails", "Salesboard.MovieDetails");
      
