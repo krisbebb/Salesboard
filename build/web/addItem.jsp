@@ -19,10 +19,8 @@
             description: <input type="text" name="description">
             quantity:  <input type="text" name="quantity">
             price:  <input type="text" name="price">
-            <button name="action" type="submit" value="update">
-                Update</button>
-            <button name="action"  type="submit" method="post" value="delete">
-                Delete</button>
+            <button name="action" type="submit" value="add">
+                Add Item</button>
             <button name="action"  type="submit" method="post" value="cancel">
                 Cancel</button>
         </form>

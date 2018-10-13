@@ -68,9 +68,12 @@ ItemHandler()
 //              req.setAttribute("sellerList", sellerList);
           
            System.out.println("WE are in itemHandler GET");
-           Connection conn = getConnection(false); try {
-             HttpSession session = req.getSession();
-            String name = (String)session.getAttribute("sessionuser");
+           Connection conn = getConnection(false); 
+              HttpSession session = req.getSession();
+           String name = (String)session.getAttribute("sessionuser");
+           try {
+          
+            
             String action = null;
           
             if (req.getParameter("edit")!=null) {
@@ -97,22 +100,45 @@ ItemHandler()
 //            editItem.setInt(3, quantity);
 //            editItem.setInt(4, price);
                 // redirect to edit item details?
-                return "/addItem.jsp";
+                int id = Integer.parseInt(req.getParameter("itemId"));
+                System.out.println("ItemId is: " + id);
+                 PreparedStatement getItem = conn.prepareStatement("select * from items "
+                         + "where id = ?");
+            getItem.setInt(1, id);
+            ResultSet rs = getItem.executeQuery();
+            while (rs.next()) {
+                String seller = name;
+                String item = rs.getString("item");
+                String description = rs.getString("description");
+                
+                int quantity = rs.getInt("quantity");
+                int price = rs.getInt("price");
+               
+                itemBean itemB = new itemBean(id, seller, item, description,quantity, price);
+                 req.setAttribute("itemBean", itemB);
+            }
+                return "/editItem.jsp";
             }
             
             if (action == "add"){
                 // redirect to edit item details?
+                return "/addItem.jsp";
             }
             
             if (action == "delete"){
-                
+                int id = Integer.parseInt(req.getParameter("itemId"));
+                System.out.println("Deleting item... " + id);
+                 PreparedStatement deleteItem = conn.prepareStatement("delete from items "
+                    + "where id = ?");
+            deleteItem.setInt(1, id);
+            deleteItem.executeUpdate();
             }
 
         }
         finally {
             conn.close();
           }  
-           
+           return "login?username=" + name;
       }
       else if(req.getMethod().equalsIgnoreCase("POST"))
       {
@@ -123,11 +149,55 @@ ItemHandler()
          //send a redirect to the client for the next page in the app (eg. a report page).
          //return null so the front controller knows that a redirect has been sent
          //and doesnt try to forward the request to a view.
+            Connection conn = getConnection(false); 
              HttpSession session = req.getSession();
             String name = (String)session.getAttribute("sessionuser");
            
 //        RequestDispatcher dispatch = req.getRequestDispatcher("sellerReport?username=" + name);
 //        dispatch.forward(req, resp);
+            
+            
+            String action = req.getParameter("action");
+            String item = req.getParameter("item");
+            String seller = name;
+            String description = req.getParameter("description");
+            int quantity = Integer.parseInt(req.getParameter("quantity"));
+            int price = Integer.parseInt(req.getParameter("price"));
+            System.out.println("item, seller, description, quantity, price" + item + seller
+            + description + quantity + price );
+            
+            System.out.println("action is: " + action);
+            if (action.equals("add")) {
+                PreparedStatement addItem = conn.prepareStatement("insert into items "
+                        + "(seller, item, description, quantity, price) values "
+                        + "(?,?,?,?,?)");
+            addItem.setString(1, seller);
+            addItem.setString(2, item);
+            addItem.setString(3, description);
+            addItem.setInt(4, quantity);
+            addItem.setInt(5, price);
+            
+            
+            addItem.executeUpdate();
+                System.out.println("executing add...");
+            } else if (action.equals("edit")) {
+                int id = Integer.parseInt(req.getParameter("itemId"));
+                 PreparedStatement editItem = conn.prepareStatement("update items " +
+                "  SET item = ?, description = ?, quantity = ?, price = ? " + 
+                         "where id = ?");
+         
+           
+            editItem.setString(1, item);
+            editItem.setString(2, description);
+            editItem.setInt(3, quantity);
+            editItem.setInt(4, price);
+            editItem.setInt(5, id);
+            
+            
+            editItem.executeUpdate();
+                System.out.println("executing update...");
+            }
+            
             return "login?username=" + name;
    }
          return null;
