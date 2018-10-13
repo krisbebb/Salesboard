@@ -11,6 +11,7 @@ package Salesboard;
  */
 public class itemBean {
   private int id;
+  private String seller;
   private String item;
   private String description;
   private int quantity;
@@ -18,8 +19,9 @@ public class itemBean {
   
     
   public itemBean()  {   }
-  public itemBean(int id, String item, String description, int quantity, int price) {
+  public itemBean(int id, String seller, String item, String description, int quantity, int price) {
         this.id = id;
+        this.seller = seller;
         this.item = item;
         this.description = description;
         this.quantity= quantity;
@@ -33,6 +35,15 @@ public class itemBean {
   public void setId(int id)
   {
     this.id = id;
+  }
+  public String getSeller()
+  {
+    return seller;
+  }
+  
+  public void setSeller(String item)
+  {
+    this.seller = seller;
   }
   
   public String getItem()

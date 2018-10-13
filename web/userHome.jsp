@@ -13,16 +13,13 @@
     </head>
     <body>
         <h1> The customer is ${userBean.username} </h1>
-           <form action = "showUser" method = "GET">
-         First Name: <input type = "text" name = "username">
-         <input type = "submit" value = "Submit" />
-      </form> 
+          
         <jsp:useBean id="userBean" class="Salesboard.userBean" scope="request"/>
         <jsp:getProperty name="userBean" property="username" />
         <jsp:getProperty name="userBean" property="age" />
         <jsp:getProperty name="userBean" property="address" />
 
-        
+        <a href="./allItemsReport">All items report</a>
 
     </body>
 </html>
