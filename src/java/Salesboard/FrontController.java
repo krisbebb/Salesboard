@@ -99,7 +99,7 @@ public class FrontController extends HttpServlet {
   public void init()
   {
      //Here we define which java classes handle which requests
-        pathsToHandlers.put("/getUser.jsp", "Salesboard.EditUserHandler");
+        pathsToHandlers.put("/userDetails.jsp", "Salesboard.EditUserHandler");
         pathsToHandlers.put("/showUser", "Salesboard.ShowUserHandler");
         pathsToHandlers.put("/login", "Salesboard.LoginHandler");
         pathsToHandlers.put("/allItemsReport", "Salesboard.AllItemsHandler");
