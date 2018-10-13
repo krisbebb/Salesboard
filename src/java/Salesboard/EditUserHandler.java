@@ -31,16 +31,20 @@ EditUserHandler()
    {
       if(req.getMethod().equalsIgnoreCase("GET"))
       {
+          System.out.println("WE are in editUserHandler GET");
          //Query data access class for item to be edited
          //attach item to request
          //return path to view (JSP page) (eg. return “./editView.jsp”; 
          //In this case the editView.jsp would use the item
          //attached to the request to write out a form prepopulated
          //with the values for the item.
-        Connection conn = getConnection(false);
+           
+         HttpSession session = req.getSession();
+          String name = (String)session.getAttribute("sessionuser");
+           Connection conn = getConnection(false);
         try {
-             HttpSession session = req.getSession();
-            String name = (String) req.getParameter("username");
+           
+           
             System.out.println(name);
 
             PreparedStatement selectUser = conn.prepareStatement("select * from users " +
@@ -59,25 +63,47 @@ EditUserHandler()
                        ", age: " + age +
                         ", address: " + address);
             }
-              
-
-        
-
-           
             }
         finally {
             conn.close();
         }  
-          return "./showUser2.jsp";
+          return "/userDetails.jsp";
       }
       else if(req.getMethod().equalsIgnoreCase("POST"))
       {
+           System.out.println("WE are in editUserHandler POST");
          //Obtain request parameters which will be the new values for
          //item being edited
          //Use the data access class to update the item being edited.
          //send a redirect to the client for the next page in the app (eg. a report page).
          //return null so the front controller knows that a redirect has been sent
          //and doesnt try to forward the request to a view.
+           
+            HttpSession session = req.getSession();
+          String name = (String)session.getAttribute("sessionuser");
+           Connection conn = getConnection(false);
+                   String action = req.getParameter("action");
+            try {
+                if (action.equals("edit")) {
+                int age = Integer.parseInt(req.getParameter("age"));
+                String address = req.getParameter("address");
+                 PreparedStatement editUser = conn.prepareStatement("update users " +
+                "  SET age = ?, address = ? " + 
+                         "where username = ?");
+           
+            editUser.setInt(1, age);
+            editUser.setString(2, address);
+            editUser.setString(3, name);
+            
+            editUser.executeUpdate();
+                System.out.println("executing update...");
+            }
+                
+            }
+             finally {
+            conn.close();
+        }  
+          return "allItemsReport";
       }
        return null;
    }

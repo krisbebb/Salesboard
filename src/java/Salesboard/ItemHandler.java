@@ -74,7 +74,7 @@ ItemHandler()
            try {
           
             
-            String action = null;
+            String action =(String)req.getParameter("action");
           
             if (req.getParameter("edit")!=null) {
                 action = "edit";
@@ -133,7 +133,27 @@ ItemHandler()
             deleteItem.setInt(1, id);
             deleteItem.executeUpdate();
             }
-
+            
+             if (action.equals("view")){
+                 int id = Integer.parseInt(req.getParameter("itemId"));
+                System.out.println("ItemId is: " + id);
+                 PreparedStatement getItem = conn.prepareStatement("select * from items "
+                         + "where id = ?");
+            getItem.setInt(1, id);
+            ResultSet rs = getItem.executeQuery();
+            while (rs.next()) {
+                String seller = name;
+                String item = rs.getString("item");
+                String description = rs.getString("description");
+                
+                int quantity = rs.getInt("quantity");
+                int price = rs.getInt("price");
+               
+                itemBean itemB = new itemBean(id, seller, item, description,quantity, price);
+                 req.setAttribute("itemBean", itemB);
+                 return "/showItem.jsp";
+            }
+             }
         }
         finally {
             conn.close();

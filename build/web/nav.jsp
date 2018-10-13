@@ -7,3 +7,5 @@
 
   <a href="./allItemsReport">All items report</a>
   <a href="../login.jsp">Login</a>
+  <a href="./userDetails.jsp">User Details</a>
+  <a href="./sellerReport">User Home</a>

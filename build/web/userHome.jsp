@@ -19,7 +19,7 @@
         <jsp:getProperty name="userBean" property="age" />
         <jsp:getProperty name="userBean" property="address" />
 
-        <a href="./allItemsReport">All items report</a>
+        <jsp:include page="./nav.jsp" />
 
     </body>
 </html>

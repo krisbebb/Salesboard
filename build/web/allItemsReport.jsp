@@ -22,6 +22,7 @@
       <TH>Description</th>
       <TH>Quantity</th>
       <TH>Price</th>
+      <th>Action</th>
         </tr>
       <c:forEach items="${itemList}" var="current">
         <tr>
@@ -31,6 +32,14 @@
             <td><c:out value="${current.description}" /></td>
             <td><c:out value="${current.quantity}" /></td>
             <td><c:out value="${current.price}" /></td>
+            <td>
+            <form action="viewItem" method="GET">
+                <input type="hidden" name="itemId" value="${current.id}" />
+                <input type="submit" value="view" name="action">
+               
+           
+               </td>
+            </form>
         </tr>
       </c:forEach>
     </table>
