@@ -142,7 +142,7 @@ CartHandler()
           }  
     return "/userCart.jsp";
 }
-     private void checkout(HttpServletRequest req, HttpServletResponse resp) throws Exception{
+     private String checkout(HttpServletRequest req, HttpServletResponse resp) throws Exception{
      
 //                    get item from list
 //                    subtract cart qty from seller qty
@@ -157,30 +157,36 @@ CartHandler()
              Connection conn = getConnection(false); 
              List<itemBean> cartList = new ArrayList<>();
                 cartList = (List)session.getAttribute("cartList");
+                int sellerTotal = 0;
+                int totalSpent= 0;
                 while (cartList.isEmpty() == false){
                 itemBean itemB = new itemBean();
-              
+              // get cartlist item 0
                 itemB.setId(cartList.get(0).getId());
-                
+                itemB.setPrice(cartList.get(0).getPrice());
                 itemB.setQuantity(cartList.remove(0).getQuantity());
                     System.out.println("bean id = " + itemB.getId());
                     System.out.println("bean qty to remove = " + itemB.getQuantity());
-                    
+                    // get data from items
                     try {
                         conn = getConnection(false); 
-                       PreparedStatement getQty = conn.prepareStatement("select quantity from items " +
+                       PreparedStatement getQty = conn.prepareStatement("select * from items " +
                 "where id = ?");
                         
             getQty.setInt(1, itemB.getId());
-            
+            // get items qty, subtract cart qty from items qty
+            // get item price, seller
+            // increment seller total by price
             ResultSet rs = getQty.executeQuery();
              while (rs.next()) {
                  System.out.println("getting qty...");
                  int qty = rs.getInt("quantity");
-             
+                 String seller = rs.getString("seller");
+                 int price = rs.getInt("price");
             int newQty = qty - itemB.getQuantity();
+            sellerTotal += price * itemB.getQuantity();
              
-               
+               // update items table
                  PreparedStatement editItem = conn.prepareStatement("update items " +
                 "  SET quantity = ? " + 
                          "where id = ?");
@@ -188,44 +194,58 @@ CartHandler()
             editItem.setInt(2, itemB.getId());
             editItem.executeUpdate();
                 System.out.println("executing update...");
-             }
-                    } finally {
-                        conn.close();
-                    }
-                    System.out.println("Updating sellers table: ");
-                    int totalPrice = (int)session.getAttribute("totalPrice");
-                   int  total_spent = 0;
-                    // if record exists
-                     // get buyers total_spent
-                    try {
-                        conn = getConnection(false); 
+                  conn = getConnection(false); 
                        PreparedStatement getTotal = conn.prepareStatement("select * from sellers " +
                 "where buyer = ?");
                         
             getTotal.setString(1, name);
             
-            ResultSet rs = getTotal.executeQuery();
-             while (rs.next()) {
-                 total_spent = rs.getInt("total_spent");
-                 String seller = rs.getString("seller");
+            ResultSet rsb = getTotal.executeQuery();
+             while (rsb.next()) {
+                 totalSpent = rsb.getInt("total_spent");
+//                 String seller = rsb.getString("seller");
                  }
-             
-              PreparedStatement editSeller = conn.prepareStatement("update sellers " +
+             // add cart totalPrice
+                    // update sellers total_spent
+              System.out.println("Updating sellers table: ");
+//                    int totalPrice = (int)session.getAttribute("totalPrice");
+//                   int  total_spent = 0;
+                    // if record exists
+              PreparedStatement checkBuyer = conn.prepareStatement ("select * from sellers " + 
+                      "where seller = ?");
+               checkBuyer.setString(1, name);
+              ResultSet existsBuyer = checkBuyer.executeQuery();
+              while (existsBuyer.next()){
+                  System.out.println(existsBuyer.getString("seller"));
+                  System.out.println("Record exists");
+                       PreparedStatement editSeller = conn.prepareStatement("update sellers " +
                 "  SET total_spent = ? " + 
                          "where buyer = ?");
-            editSeller.setInt(1, total_spent + totalPrice);
+            editSeller.setInt(1, totalSpent + sellerTotal);
             editSeller.setString(2, name);
+            System.out.println("executing seller update...");
             editSeller.executeUpdate();
-                System.out.println("executing seller update...");
-                    }finally {
+            return "/userCart.jsp";
+                  }
+              
+                System.out.println("no record exists");
+                PreparedStatement insertBuyer = conn.prepareStatement("insert into sellers "+ 
+                        "values (?, ?, ?)");
+                insertBuyer.setString(1, seller);
+                insertBuyer.setString(2, name);
+                insertBuyer.setInt(3, totalSpent + sellerTotal);
+                insertBuyer.executeUpdate();
+                System.out.println("executing seller insert...");
+                session.setAttribute("totalPrice", 0);
+                  
+              }
+                     // get buyers total_spent
+                    } finally {
                         conn.close();
                     }
-                   
-                    // add cart totalPrice
-                    // update sellers total_spent
                     // else
                     // insert record for seller, with buyer and total price
-             }  
+             }  return "/userCart.jsp";
      }
     private void printEnumeration(HttpServletRequest req, HttpServletResponse resp){
          Enumeration<String> parameterNames = req.getParameterNames();
