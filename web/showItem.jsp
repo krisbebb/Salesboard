@@ -13,21 +13,35 @@
     </head>
     <body>
         <h1>Item Details</h1>
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Item</th>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                
+            </tr>
         <tr>
             <td><c:out value="${itemBean.id}" /></td>
             <td><c:out value="${itemBean.item}" /></td>
             <td><c:out value="${itemBean.description}" /></td>
             <td><c:out value="${itemBean.quantity}" /></td>
             <td><c:out value="${itemBean.price}" /></td>
-            <td><form action="buyItem" method="POST">
+        </tr>
+        <tr>
+            <td></td>
+                <td></td>
+                <td></td>
+                <td><form action="buyItem" method="POST">
+                <input type="number" value="1" name="itemQty">   </td>
+                <td>
                 <input type="hidden" name="itemId" value="${itemBean.id}" />
-                <input type="submit" value="buy" name="action">
+                <input type="submit" value="buy" name="action">   </form> </td>
            
-               </td>
-            </form>
                 </td>
         </tr>
-        
+        </table>
          <jsp:include page="./nav.jsp" />
 </body>
 </html>

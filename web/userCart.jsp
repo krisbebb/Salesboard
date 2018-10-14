@@ -36,13 +36,20 @@
             <form action="removeItem" method="POST">
                 <input type="hidden" name="itemId" value="${current.id}" />
                 <input type="submit" value="remove" name="action">
+          
                
            
                </td>
             </form>
         </tr>
+        
       </c:forEach>
+        
+             
     </table>
+         <form action="checkout" method="POST">
+                <input type="hidden" name="itemId" value="${current.id}" />
+                <input type="submit" value="checkout" name="action">
        <jsp:include page="./nav.jsp" />
 
     </body>

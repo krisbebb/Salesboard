@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.*;
@@ -35,6 +36,7 @@ CartHandler()
       if(req.getMethod().equalsIgnoreCase("GET"))
       {
            System.out.println("WE are in cartHandler GET");
+          
            Connection conn = getConnection(false); 
               HttpSession session = req.getSession();
            String name = (String)session.getAttribute("sessionuser");
@@ -53,25 +55,43 @@ CartHandler()
       else if(req.getMethod().equalsIgnoreCase("POST"))
       {
                 System.out.println("WE are in cartHandler POST");
-                Connection conn = getConnection(false); 
-              HttpSession session = req.getSession();
-           String name = (String)session.getAttribute("sessionuser");
-          
-            System.out.println("Templist is copied");
-//          System.out.println("templist item 0 is: " + tempList.get(0));
-//            List<itemBean> cartList = (List<itemBean>)session.getAttribute("cartList");
+                printEnumeration(req,resp);
+                String action = (String)req.getParameter("action");
+                
+                if (action.equals("checkout")){
+                   checkout(req,resp);
+                    return "allItemsReport";
+                }
+                if (action.equals("buy")){
+                    String view = addItemToCart(req,resp);
+                    return view;
+                }
+                
+      }  return null;
+   }
+     private String addItemToCart(HttpServletRequest req, HttpServletResponse resp) throws Exception{
+           Connection conn = getConnection(false); 
+         try{
            
-//            cartList = ((List<itemBean>)(session.getAttribute("cartList")));
-//            cartList = (List<itemBean>)session.getAttribute("cartList");
-            if (req.getParameter("itemId") == null){
-                System.out.println("itemId is null");
-                return null;
+            HttpSession session = req.getSession();
+            String name = (String)session.getAttribute("sessionuser");
+
+            System.out.println("Templist is copied");
+            
+             if (req.getParameter("itemId") == null){
+             System.out.println("itemId is null");
+             return null;
             }
-           try {
+           
             int id = Integer.parseInt(req.getParameter("itemId"));
             System.out.println("id is: " + id);
+            
+            
+            
+            int itemQty = Integer.parseInt(req.getParameter("itemQty"));
+            System.out.println("itemQty is: " + itemQty);
             System.out.println("sessionuser parameter: " + name);
-             PreparedStatement cartItem = conn.prepareStatement("select * from items " +
+            PreparedStatement cartItem = conn.prepareStatement("select * from items " +
                     "where id = ?");
             cartItem.setInt(1, id);
             ResultSet rs = cartItem.executeQuery();
@@ -82,11 +102,11 @@ CartHandler()
                 String seller = rs.getString("seller");
                 String item = rs.getString("item");
                 String description = rs.getString("description");
-                int quantity = rs.getInt("quantity");
+                int quantity = itemQty;
                 int price = rs.getInt("price");
                
                 itemBean itemB = new itemBean(id, seller, item, description,quantity, price);
-               System.out.println("item added to list ");
+                System.out.println("item added to list ");
                 System.out.println("\tID: " + itemB.getId() +
                         ", seller: " + itemB.getSeller() + 
                        ", item: " + itemB.getItem() +
@@ -94,9 +114,7 @@ CartHandler()
                         ", quantity: " + itemB.getQuantity() +
                         ", price: " + itemB.getPrice());
                       tempList.add(itemB);
-                       
             }
-//              List<itemBean> tempList = new ArrayList<>();
             if (session.getAttribute("cartList") == null){
                 System.out.println("cartList is null");
                 session.setAttribute("cartlist", tempList);
@@ -108,16 +126,81 @@ CartHandler()
                 cartList = (List)session.getAttribute("cartList");
                 session.setAttribute("cartList", tempList.addAll(cartList));
             }
-//            tempList = (List)session.getAttribute("cartList");
             
               session.setAttribute("cartList", tempList);
-            
             
            }  finally {
             conn.close();
           }  
-      }  return "/userCart.jsp";
-   }
+    return "/userCart.jsp";
+}
+     private void checkout(HttpServletRequest req, HttpServletResponse resp) throws Exception{
+     
+//                    get item from list
+//                    subtract cart qty from seller qty
+//                    update seller qty db
+//                      add total_price + buyer to sellers table
+//                    repeat
+//                    clear cart list
+//                    return to all items
+         
+              HttpSession session = req.getSession();
+            String name = (String)session.getAttribute("sessionuser");
+             Connection conn = getConnection(false); 
+             List<itemBean> cartList = new ArrayList<>();
+                cartList = (List)session.getAttribute("cartList");
+                while (cartList.isEmpty() == false){
+                itemBean itemB = new itemBean();
+              
+                itemB.setId(cartList.get(0).getId());
+                
+                itemB.setQuantity(cartList.remove(0).getQuantity());
+                    System.out.println("bean id = " + itemB.getId());
+                    System.out.println("bean qty to remove = " + itemB.getQuantity());
+                    
+                    try {
+                        conn = getConnection(false); 
+                       PreparedStatement getQty = conn.prepareStatement("select quantity from items " +
+                "where id = ?");
+                        
+            getQty.setInt(1, itemB.getId());
+            
+            ResultSet rs = getQty.executeQuery();
+             while (rs.next()) {
+                 System.out.println("getting qty...");
+                 int qty = rs.getInt("quantity");
+             
+            int newQty = qty - itemB.getQuantity();
+             
+               
+                 PreparedStatement editItem = conn.prepareStatement("update items " +
+                "  SET quantity = ? " + 
+                         "where id = ?");
+            editItem.setInt(1, newQty);
+            editItem.setInt(2, itemB.getId());
+            editItem.executeUpdate();
+                System.out.println("executing update...");
+             }
+                    } finally {
+                        conn.close();
+                    }
+                    
+             }  
+     }
+    private void printEnumeration(HttpServletRequest req, HttpServletResponse resp){
+         Enumeration<String> parameterNames = req.getParameterNames();
+        while (parameterNames.hasMoreElements()) {
+            String paramName = parameterNames.nextElement();
+           
+            String[] paramValues = req.getParameterValues(paramName);
+            for (int i = 0; i < paramValues.length; i++) {
+                String paramValue = paramValues[i];
+                System.out.println(paramName + "\t" + paramValue);
+                
+            }
+        }
+    }
+
     private Connection getConnection(boolean createDatabase) throws SQLException {
     checkDriverLoaded();
     String attributes = "";
@@ -136,8 +219,9 @@ CartHandler()
             throw new RuntimeException("An error occrred loading jdbc driver", ex);
         }
     }
-
+    
+    
+  
 }
-
 
 
