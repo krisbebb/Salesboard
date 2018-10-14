@@ -11,7 +11,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import static java.util.Collections.list;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.*;
@@ -69,6 +71,11 @@ CartHandler()
                 if (action.equals("buy")){
                     String view = addItemToCart(req,resp);
                     return view;
+                }
+                
+                if (action.equals("remove")){
+                    removeCartItem(req, resp);
+                    return "/userCart.jsp";
                 }
                 
       }  return null;
@@ -284,6 +291,39 @@ CartHandler()
             throw new RuntimeException("An error occrred loading jdbc driver", ex);
         }
     }
+
+    private void removeCartItem(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+      int listItem = Integer.parseInt(req.getParameter("listItem"));
+        HttpSession session = req.getSession();
+        int totalPrice = (int)session.getAttribute("totalPrice");
+       List<itemBean> tempList = new ArrayList<>();
+                tempList = (List)session.getAttribute("cartList");
+       int i = 0;
+       if (tempList == null) {
+           System.out.println("cartlist is null");
+           System.out.println("clearing totalPrice");
+           totalPrice = 0;
+       }
+       
+           
+           for (Iterator<itemBean> iter = tempList.listIterator(); 
+                   iter.hasNext(); ) 
+           {
+            itemBean a = iter.next();
+            if (a.getId() == listItem) {
+                System.out.println("list position is " + i);
+          
+               System.out.println("found!");
+               
+               // subtract quantity * total from cartTotal
+               totalPrice -= a.getQuantity() * a.getPrice();
+               session.setAttribute("totalPrice", totalPrice);
+                iter.remove();
+    }
+}
+          
+       }
+    
     
     
   
