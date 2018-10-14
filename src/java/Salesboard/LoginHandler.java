@@ -73,6 +73,28 @@ LoginHandler()
                         ", price: " + itemB.getPrice());
             }
               req.setAttribute("sellerList", sellerList);
+              
+               PreparedStatement buyerItems = conn.prepareStatement("select * from sellers " + 
+                    "where seller = ?");
+            buyerItems.setString(1, name);
+            ResultSet rsb = buyerItems.executeQuery();
+            List<sellerBean> buyerList = new ArrayList<>();
+            while (rsb.next()) {
+                System.out.println("Printing result...");
+                String buyer = rsb.getString("buyer");
+                int total_spent = rsb.getInt("total_spent");
+            
+          
+           
+               
+                sellerBean sellerB = new sellerBean(name, buyer, total_spent);
+                
+                      buyerList.add(sellerB);
+                System.out.println("\tID: " + sellerB.getSeller() +
+                        ", seller: " + sellerB.getBuyer() + 
+                       ", item: " + sellerB.getTotal_spent());
+            }
+              req.setAttribute("buyerList", buyerList);
         }
         finally {
             conn.close();
