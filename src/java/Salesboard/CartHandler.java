@@ -57,6 +57,10 @@ CartHandler()
                 System.out.println("WE are in cartHandler POST");
                 printEnumeration(req,resp);
                 String action = (String)req.getParameter("action");
+               HttpSession session = req.getSession();
+                if (session.getAttribute("totalPrice") == null) {
+                    session.setAttribute("totalPrice", 0);
+                }
                 
                 if (action.equals("checkout")){
                    checkout(req,resp);
@@ -75,7 +79,8 @@ CartHandler()
            
             HttpSession session = req.getSession();
             String name = (String)session.getAttribute("sessionuser");
-
+            int totalPrice = (int)session.getAttribute("totalPrice");  
+             System.out.println("session totalPrice is " + totalPrice);
             System.out.println("Templist is copied");
             
              if (req.getParameter("itemId") == null){
@@ -113,6 +118,9 @@ CartHandler()
                         ", description: " + itemB.getDescription() + 
                         ", quantity: " + itemB.getQuantity() +
                         ", price: " + itemB.getPrice());
+                        totalPrice += itemB.getQuantity() * itemB.getPrice();
+                        System.out.println("Total Price is: " + totalPrice);
+                        session.setAttribute("totalPrice", totalPrice);
                       tempList.add(itemB);
             }
             if (session.getAttribute("cartList") == null){
@@ -184,7 +192,39 @@ CartHandler()
                     } finally {
                         conn.close();
                     }
-                    
+                    System.out.println("Updating sellers table: ");
+                    int totalPrice = (int)session.getAttribute("totalPrice");
+                   int  total_spent = 0;
+                    // if record exists
+                     // get buyers total_spent
+                    try {
+                        conn = getConnection(false); 
+                       PreparedStatement getTotal = conn.prepareStatement("select * from sellers " +
+                "where buyer = ?");
+                        
+            getTotal.setString(1, name);
+            
+            ResultSet rs = getTotal.executeQuery();
+             while (rs.next()) {
+                 total_spent = rs.getInt("total_spent");
+                 String seller = rs.getString("seller");
+                 }
+             
+              PreparedStatement editSeller = conn.prepareStatement("update sellers " +
+                "  SET total_spent = ? " + 
+                         "where buyer = ?");
+            editSeller.setInt(1, total_spent + totalPrice);
+            editSeller.setString(2, name);
+            editSeller.executeUpdate();
+                System.out.println("executing seller update...");
+                    }finally {
+                        conn.close();
+                    }
+                   
+                    // add cart totalPrice
+                    // update sellers total_spent
+                    // else
+                    // insert record for seller, with buyer and total price
              }  
      }
     private void printEnumeration(HttpServletRequest req, HttpServletResponse resp){

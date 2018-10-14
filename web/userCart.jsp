@@ -47,9 +47,13 @@
         
              
     </table>
-         <form action="checkout" method="POST">
+        
+                
+                <h2> Total for cart is ${sessionScope["totalPrice"]} </h2>
+                 <form action="checkout" method="POST">
                 <input type="hidden" name="itemId" value="${current.id}" />
                 <input type="submit" value="checkout" name="action">
+         </form>
        <jsp:include page="./nav.jsp" />
 
     </body>
