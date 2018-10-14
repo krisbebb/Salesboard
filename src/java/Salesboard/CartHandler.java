@@ -157,9 +157,10 @@ CartHandler()
              Connection conn = getConnection(false); 
              List<itemBean> cartList = new ArrayList<>();
                 cartList = (List)session.getAttribute("cartList");
-                int sellerTotal = 0;
+                
                 int totalSpent= 0;
                 while (cartList.isEmpty() == false){
+                    int sellerTotal = 0;
                 itemBean itemB = new itemBean();
               // get cartlist item 0
                 itemB.setId(cartList.get(0).getId());
@@ -196,9 +197,10 @@ CartHandler()
                 System.out.println("executing update...");
                   conn = getConnection(false); 
                        PreparedStatement getTotal = conn.prepareStatement("select * from sellers " +
-                "where buyer = ?");
+                "where buyer = ? and seller=?");
                         
             getTotal.setString(1, name);
+            getTotal.setString(2, seller);
             
             ResultSet rsb = getTotal.executeQuery();
              while (rsb.next()) {
@@ -212,19 +214,22 @@ CartHandler()
 //                   int  total_spent = 0;
                     // if record exists
               PreparedStatement checkBuyer = conn.prepareStatement ("select * from sellers " + 
-                      "where seller = ?");
-               checkBuyer.setString(1, name);
+                      "where seller = ? and buyer = ?");
+               checkBuyer.setString(1, seller);
+               checkBuyer.setString(2, name);
               ResultSet existsBuyer = checkBuyer.executeQuery();
               while (existsBuyer.next()){
                   System.out.println(existsBuyer.getString("seller"));
                   System.out.println("Record exists");
                        PreparedStatement editSeller = conn.prepareStatement("update sellers " +
                 "  SET total_spent = ? " + 
-                         "where buyer = ?");
+                         "where buyer = ? and seller = ?");
             editSeller.setInt(1, totalSpent + sellerTotal);
             editSeller.setString(2, name);
+            editSeller.setString(3, seller);
             System.out.println("executing seller update...");
             editSeller.executeUpdate();
+            session.setAttribute("totalPrice", 0);
             return "/userCart.jsp";
                   }
               
@@ -233,7 +238,7 @@ CartHandler()
                         "values (?, ?, ?)");
                 insertBuyer.setString(1, seller);
                 insertBuyer.setString(2, name);
-                insertBuyer.setInt(3, totalSpent + sellerTotal);
+                insertBuyer.setInt(3, sellerTotal);
                 insertBuyer.executeUpdate();
                 System.out.println("executing seller insert...");
                 session.setAttribute("totalPrice", 0);
