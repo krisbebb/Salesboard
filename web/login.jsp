@@ -6,6 +6,8 @@
 
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="m" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -13,7 +15,7 @@
         <title>Show User</title>
     </head>
     <body>
-         <m:nav/>
+       <c:remove var="sessionuser"/>
         <h1> Please enter username to login or create account </h1>
            <form action = "./app/login" method = "GET">
          First Name: <input type = "text" name = "username">

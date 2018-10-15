@@ -36,7 +36,7 @@ public class AuthFilter implements Filter {
             String requestUser = (String)req.getParameter("username");
             System.out.println("Requested user is: " + requestUser);
             System.out.println("Filter: checking sessionuser");
-           if (sessionUser.equals(requestUser) == false){
+           if ((sessionUser.equals(requestUser) == false) && !(requestUser.equals(null))){
                System.out.println("Filter: not logged on as this user: ");
                 res.sendRedirect(req.getContextPath() + "/login.jsp");
                 return;
