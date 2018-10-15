@@ -16,7 +16,8 @@
           
        <form action='userDetails.jsp' method="post">
             Age: <input type="text" name="age" value="${userBean.age}">
-            Address <input type="text" name="address" value="${userBean.address}">
+            Name: <input type="text" name="address" value="${userBean.name}">
+            Address: <input type="text" name="address" value="${userBean.address}">
             <input type="hidden" name="username" value="${userBean.username}" />
             <button name="action" type="submit" value="edit">
                 Update User</button>

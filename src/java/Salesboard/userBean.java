@@ -12,12 +12,14 @@ package Salesboard;
 public class userBean {
     
   private String username;
+  private String name;
   private int age;
   private String address;
     
   public userBean()  {   }
-  public userBean(String username, int age, String address) {
+  public userBean(String username, String name, int age, String address) {
       this.username = username;
+      this.name = name;
       this.age = age;
       this.address = address;
   }
@@ -29,6 +31,15 @@ public class userBean {
   public void setUsername(String username)
   {
     this.username = username;
+  }
+  public String getName()
+  {
+    return name;
+  }
+  
+  public void setName(String username)
+  {
+    this.name = name;
   }
   public int getAge()
   {

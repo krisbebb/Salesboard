@@ -34,15 +34,18 @@
             <td><c:out value="${current.price}" /></td>
             <td>
             <form action="removeItem" method="POST">
-                <input type="hidden" name="itemId" value="${current.id}" />
+                <input type="hidden" name="listItem" value="${current.id}" />
                 <input type="submit" value="remove" name="action">
-               
-           
                </td>
             </form>
         </tr>
       </c:forEach>
     </table>
+                <h2> Total for cart is ${sessionScope["totalPrice"]} </h2>
+                 <form action="checkout" method="POST">
+                <input type="hidden" name="itemId" value="${current.id}" />
+                <input type="submit" value="checkout" name="action">
+         </form>
        <jsp:include page="./nav.jsp" />
 
     </body>
