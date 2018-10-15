@@ -8,6 +8,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <m:header/>
         <m:nav/>
+        <div class="container">
         <h1>Shopping Cart for ${sessionScope["sessionuser"]} </h1>
          
        <table class="table">
@@ -46,4 +47,5 @@
        <input type="hidden" name="itemId" value="${current.id}" />
        <input class="btn btn-primary" type="submit" value="Clear" name="action">
     </form>
+       </div>
        <m:footer/>

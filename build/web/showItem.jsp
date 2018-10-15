@@ -8,6 +8,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <m:header/>
          <m:nav/>
+         <div class="container">
         <h1>Item Details</h1>
         <table class="table">
             <tr>
@@ -29,13 +30,16 @@
             <td></td>
                 <td></td>
                 <td></td>
-                <td><form action="buyItem" method="POST">
-                <input type="number" value="1" name="itemQty">   </td>
                 <td>
+                <form action="buyItem" method="POST">
+                <div class="form-group">
+                <input class="form-control" type="number" value="1" name="itemQty">  </div> </td>
+                <td><div class="form-group">
                 <input type="hidden" name="itemId" value="${itemBean.id}" />
-                <input class="btn btn-primary" type="submit" value="buy" name="action">   </form> </td>
+                <input class="btn btn-primary" type="submit" value="buy" name="action"> </div>  </form> </td>
            
                 </td>
         </tr>
         </table>
+                </div>
                 <m:footer/>

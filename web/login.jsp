@@ -15,10 +15,17 @@
             
        <c:set var="adminUser" value="${initParam['adminUser']}" scope="session" />
      
-        <h1> Please enter username to login or create account </h1>
-           <form action = "./app/login" method = "GET">
-         First Name: <input type = "text" name = "username">
-         <input class="btn btn-primary" type = "submit" value = "Submit" />
+        <h1> Salesboard </h1>
+        <h2> Enter Username </h2>
+        
+        <form class="form-inline" action = "./app/login" method = "GET">
+            <div class="form-group mx-2">
+                <label for="usernameInput" >Username: </label>
+            <input type="text" class="form-control" name = "username" value="George">
+         </div>
+      
+         <input class="btn btn-primary mx-2 " type = "submit" value = "Submit" />
+        
       </form> 
         </div>
            <m:footer/>

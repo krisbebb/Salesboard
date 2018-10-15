@@ -10,7 +10,9 @@
         <m:nav/>
         <div class="container">
         <h1>Home Page for ${sessionScope["sessionuser"]} </h1>
-        <h2> Seller Report </h2>
+        <hr>
+        <br>
+        <h2> My Items for Sale </h2>
         <table class="table">
         <tr>
       <TH>Id</th>
@@ -42,8 +44,9 @@
                
                 <input class="btn btn-primary" type="submit" value="add item" name="add"></td>
             </form>
-        
-        <h2>Customer Report </h2>
+        <hr>
+        <br>
+        <h2>My Customers </h2>
          <table class="table">
         <tr>
       <TH>Buyer</th>

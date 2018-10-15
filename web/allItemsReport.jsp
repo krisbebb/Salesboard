@@ -9,7 +9,7 @@
 <m:header/>
          <m:nav/>
          <div class="container">
-        <h1> All Items Report </h1>
+        <h1> Salesboard</h1>
           
     <table class="table">
         <tr>
