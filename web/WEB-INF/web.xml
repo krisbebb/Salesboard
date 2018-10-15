@@ -18,4 +18,12 @@
         <servlet-name>FrontController</servlet-name>
         <url-pattern>/app/*</url-pattern>
     </servlet-mapping>
+    <filter>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>Salesboard.AuthFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/app/*</url-pattern>
+    </filter-mapping>
 </web-app>
