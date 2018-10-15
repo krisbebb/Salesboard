@@ -156,7 +156,7 @@ public class FrontController extends HttpServlet {
       if (viewPath != null) {
         RequestDispatcher rd=request.getRequestDispatcher(viewPath); 
         
-          System.out.println("viewPath is: " + viewPath + "\n");
+      
         rd.forward(request, response);
       }
       System.out.println("We have null and got here");

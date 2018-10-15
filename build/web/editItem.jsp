@@ -6,14 +6,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="m" tagdir="/WEB-INF/tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Edit Item </title>
-    </head>
-    <body>
+<m:header/>
          <m:nav/>
+         <div class="container">
         <h1>Edit Item</h1>
         
         <form action='editItem' method="post">
@@ -22,10 +17,10 @@
             quantity:  <input type="text" name="quantity" value="${itemBean.quantity}">
             price:  <input type="text" name="price" value="${itemBean.price}">
              <input type="hidden" name="itemId" value="${itemBean.id}" />
-            <button name="action" type="submit" value="edit">
+            <button class="btn btn-primary" name="action" type="submit" value="edit">
                 Edit Item</button>
-            <button name="action"  type="submit" method="post" value="cancel">
+            <button class="btn btn-primary" name="action"  type="submit" method="post" value="cancel">
                 Cancel</button>
         </form>
-</body>
-</html>
+            </div>
+             <m:footer/>

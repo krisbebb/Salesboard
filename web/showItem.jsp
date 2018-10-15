@@ -6,16 +6,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="m" tagdir="/WEB-INF/tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Item Details </title>
-    </head>
-    <body>
+<m:header/>
          <m:nav/>
+         <div class="container">
         <h1>Item Details</h1>
-        <table>
+        <table class="table">
             <tr>
                 <th>Id</th>
                 <th>Item</th>
@@ -35,15 +30,16 @@
             <td></td>
                 <td></td>
                 <td></td>
-                <td><form action="buyItem" method="POST">
-                <input type="number" value="1" name="itemQty">   </td>
                 <td>
+                <form action="buyItem" method="POST">
+                <div class="form-group">
+                <input class="form-control" type="number" value="1" name="itemQty">  </div> </td>
+                <td><div class="form-group">
                 <input type="hidden" name="itemId" value="${itemBean.id}" />
-                <input type="submit" value="buy" name="action">   </form> </td>
+                <input class="btn btn-primary" type="submit" value="buy" name="action"> </div>  </form> </td>
            
                 </td>
         </tr>
         </table>
-    
-</body>
-</html>
+                </div>
+                <m:footer/>

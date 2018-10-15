@@ -8,19 +8,24 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="m" tagdir="/WEB-INF/tags" %>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Show User</title>
-    </head>
-    <body>
+<m:header/>
+<div class="container">
        <c:remove var="sessionuser"/>
-        <h1> Please enter username to login or create account </h1>
-           <form action = "./app/login" method = "GET">
-         First Name: <input type = "text" name = "username">
-         <input type = "submit" value = "Submit" />
+       <c:remove var="adminUser"/>
+            
+       <c:set var="adminUser" value="${initParam['adminUser']}" scope="session" />
+     
+        <h1> Salesboard </h1>
+        <h2> Enter Username </h2>
+        
+        <form class="form-inline" action = "./app/login" method = "GET">
+            <div class="form-group mx-2">
+                <label for="usernameInput" >Username: </label>
+            <input type="text" class="form-control" name = "username" value="George">
+         </div>
+      
+         <input class="btn btn-primary mx-2 " type = "submit" value = "Submit" />
+        
       </form> 
-       
-    </body>
-</html>
+        </div>
+           <m:footer/>

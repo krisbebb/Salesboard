@@ -6,17 +6,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
  <%@ taglib prefix="m" tagdir="/WEB-INF/tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>User Cart</title>
-    </head>
-    <body
+<m:header/>
         <m:nav/>
+        <div class="container">
         <h1>Shopping Cart for ${sessionScope["sessionuser"]} </h1>
          
-       <table>
+       <table class="table">
         <tr>
       <TH>Id</th>
       <TH>Seller</th>
@@ -37,7 +32,7 @@
             <td>
             <form action="removeItem" method="POST">
                 <input type="hidden" name="listItem" value="${current.id}" />
-                <input type="submit" value="remove" name="action">
+                <input class="btn btn-primary" type="submit" value="remove" name="action">
                </td>
             </form>
         </tr>
@@ -46,13 +41,11 @@
     <h2> Total for cart is ${sessionScope["totalPrice"]} </h2>
     <form action="checkout" method="POST">
        <input type="hidden" name="itemId" value="${current.id}" />
-       <input type="submit" value="Checkout" name="action">
+       <input class="btn btn-primary" type="submit" value="Checkout" name="action">
     
     
        <input type="hidden" name="itemId" value="${current.id}" />
-       <input type="submit" value="Clear" name="action">
+       <input class="btn btn-primary" type="submit" value="Clear" name="action">
     </form>
-
-
-    </body>
-</html>
+       </div>
+       <m:footer/>
