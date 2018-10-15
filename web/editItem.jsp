@@ -4,6 +4,7 @@
     Author     : kris
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="m" tagdir="/WEB-INF/tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -12,6 +13,7 @@
         <title>Edit Item </title>
     </head>
     <body>
+         <m:nav/>
         <h1>Edit Item</h1>
         
         <form action='editItem' method="post">

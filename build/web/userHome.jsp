@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="m" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,6 +13,7 @@
         <title>Show User</title>
     </head>
     <body>
+        <m:nav/>
         <h1> The customer is ${userBean.username} </h1>
           
         <jsp:useBean id="userBean" class="Salesboard.userBean" scope="request"/>
@@ -19,7 +21,7 @@
         <jsp:getProperty name="userBean" property="age" />
         <jsp:getProperty name="userBean" property="address" />
 
-        <jsp:include page="./nav.jsp" />
+
 
     </body>
 </html>

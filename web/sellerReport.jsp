@@ -4,6 +4,7 @@
     Author     : kris
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="m" tagdir="/WEB-INF/tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -12,6 +13,7 @@
         <title>Home </title>
     </head>
     <body>
+        <m:nav/>
         <h1>Home Page for ${sessionScope["sessionuser"]} </h1>
         <h2> Seller Report </h2>
         <table>
@@ -63,7 +65,7 @@
     </table>
 
         
-      <jsp:include page="./nav.jsp" />
+
 
     </body>
 </html>

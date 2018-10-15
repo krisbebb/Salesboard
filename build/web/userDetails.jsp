@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="m" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,6 +13,7 @@
         <title>Edit User</title>
     </head>
     <body>
+        <m:nav/>
         <h1> Edit User ${userBean.username} </h1>
           
        <form action='userDetails.jsp' method="post">
@@ -24,7 +26,7 @@
             <button name="action"  type="submit" method="post" value="cancel">
                 Cancel</button>
         </form>
-       <jsp:include page="./nav.jsp" />
+    
 
     </body>
 </html>

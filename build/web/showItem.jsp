@@ -4,6 +4,7 @@
     Author     : kris
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="m" tagdir="/WEB-INF/tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -12,6 +13,7 @@
         <title>Item Details </title>
     </head>
     <body>
+         <m:nav/>
         <h1>Item Details</h1>
         <table>
             <tr>
@@ -42,6 +44,6 @@
                 </td>
         </tr>
         </table>
-         <jsp:include page="./nav.jsp" />
+    
 </body>
 </html>
