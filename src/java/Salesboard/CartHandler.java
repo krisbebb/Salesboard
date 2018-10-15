@@ -39,18 +39,18 @@ CartHandler()
       {
            System.out.println("WE are in cartHandler GET");
           
-           Connection conn = getConnection(false); 
-              HttpSession session = req.getSession();
-           String name = (String)session.getAttribute("sessionuser");
-           try {
-            int id = Integer.parseInt(req.getParameter("itemId"));
-            System.out.println("id is: " + id);
-            System.out.println("sessionuser parameter: " + name);
-          
-           }
-        finally {
-            conn.close();
-          }  
+//           Connection conn = getConnection(false); 
+//              HttpSession session = req.getSession();
+//           String name = (String)session.getAttribute("sessionuser");
+//           try {
+//            int id = Integer.parseInt(req.getParameter("itemId"));
+//            System.out.println("id is: " + id);
+//            System.out.println("sessionuser parameter: " + name);
+//          
+//           }
+//        finally {
+//            conn.close();
+//          }  
            return "/userCart.jsp";
            
       }

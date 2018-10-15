@@ -4,11 +4,29 @@
     Author     : kris
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    <a href="./sellerReport">Home</a>
-    <a href="./allItemsReport">Salesboard</a>
-    <a href="./userDetails.jsp">Edit User Details</a>
-    <a href="../login.jsp">Logout</a>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<ul class="nav">
+    <li class="nav-item">
+    <a class="nav-link" href="./sellerReport">Home</a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link" href="./allItemsReport">Salesboard</a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link" href="./userDetails.jsp">Edit User Details</a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link" href="./buyItem">Shopping Cart</a>
+    </li>
+    <li class="nav-item">
+    <a class="nav-link" href="../login.jsp">Logout</a>
+    </li>
    
     <c:if test="${sessionScope.adminUser == sessionScope.sessionuser}">
-        <a href="./admin.jsp">Admin</a>
+        <li class="nav-item">
+        <a class="nav-link" href="./admin.jsp">Admin</a>
+        </li>
 </c:if>
+        </ul>
+  </nav>

@@ -6,13 +6,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="m" tagdir="/WEB-INF/tags" %>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Show User</title>
-    </head>
-    <body>
+
+        <m:header/>
         <m:nav/>
         <h1> The customer is ${userBean.username} </h1>
           
@@ -22,6 +17,4 @@
         <jsp:getProperty name="userBean" property="address" />
 
 
-
-    </body>
-</html>
+        <m:footer/>

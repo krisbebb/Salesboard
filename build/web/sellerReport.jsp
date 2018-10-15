@@ -6,17 +6,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="m" tagdir="/WEB-INF/tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Home </title>
-    </head>
-    <body>
+        <m:header/> 
         <m:nav/>
+        <div class="container">
         <h1>Home Page for ${sessionScope["sessionuser"]} </h1>
         <h2> Seller Report </h2>
-        <table>
+        <table class="table">
         <tr>
       <TH>Id</th>
       <TH>Item</th>
@@ -34,9 +29,9 @@
             <td><c:out value="${current.price}" /></td>
             <td><form action="editItem" method="GET">
                 <input type="hidden" name="itemId" value="${current.id}" />
-                <input type="submit" value="edit" name="edit">
+                <input class="btn btn-primary" type="submit" value="edit" name="edit">
            
-                <input type="submit" value="delete" name="delete"></td>
+                <input class="btn btn-primary" type="submit" value="delete" name="delete"></td>
             </form>
                 </td>
         </tr>
@@ -45,11 +40,11 @@
 
         <form action="editItem" method="GET">
                
-                <input type="submit" value="add item" name="add"></td>
+                <input class="btn btn-primary" type="submit" value="add item" name="add"></td>
             </form>
         
         <h2>Customer Report </h2>
-         <table>
+         <table class="table">
         <tr>
       <TH>Buyer</th>
       <TH>Total Spent</th>
@@ -63,9 +58,7 @@
         </tr>
       </c:forEach>
     </table>
-
+        </div>
         
+        <m:footer/>
 
-
-    </body>
-</html>

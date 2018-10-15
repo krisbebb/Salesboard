@@ -6,17 +6,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="m" tagdir="/WEB-INF/tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>All Items Report</title>
-    </head>
-    <body>
+<m:header/>
          <m:nav/>
+         <div class="container">
         <h1> All Items Report </h1>
           
-    <table>
+    <table class="table">
         <tr>
       <TH>Id</th>
       <TH>Seller</th>
@@ -37,7 +32,7 @@
             <td>
             <form action="viewItem" method="GET">
                 <input type="hidden" name="itemId" value="${current.id}" />
-                <input type="submit" value="view" name="action">
+                <input class="btn btn-primary" type="submit" value="view" name="action">
                
            
                </td>
@@ -45,8 +40,5 @@
         </tr>
       </c:forEach>
     </table>
-
-    
-
-    </body>
-</html>
+</div>
+        <m:footer/>
