@@ -49,13 +49,14 @@ EditUserHandler()
             while (rs.next()) {
                 System.out.println("Printing result...");
                 String uname = rs.getString("username");
+                String fullName = rs.getString("name");
                 int age = rs.getInt("age");
                 String address = rs.getString("address");
-                userBean user = new userBean(uname, age, address);
+                userBean user = new userBean(uname, fullName, age, address);
                 req.setAttribute("userBean", user);
                 
                 System.out.println("\tUsername: " + uname +
-                       ", age: " + age +
+                      ", name: " + ", age: " + age +
                         ", address: " + address);
             }
             }
