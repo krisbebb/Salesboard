@@ -41,11 +41,15 @@
         </tr>
       </c:forEach>
     </table>
-                <h2> Total for cart is ${sessionScope["totalPrice"]} </h2>
-                 <form action="checkout" method="POST">
-                <input type="hidden" name="itemId" value="${current.id}" />
-                <input type="submit" value="checkout" name="action">
-         </form>
+    <h2> Total for cart is ${sessionScope["totalPrice"]} </h2>
+    <form action="checkout" method="POST">
+       <input type="hidden" name="itemId" value="${current.id}" />
+       <input type="submit" value="Checkout" name="action">
+    
+    
+       <input type="hidden" name="itemId" value="${current.id}" />
+       <input type="submit" value="Clear" name="action">
+    </form>
        <jsp:include page="./nav.jsp" />
 
     </body>
