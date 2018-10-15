@@ -4,6 +4,7 @@
     Author     : kris
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+ <%@ taglib prefix="m" tagdir="/WEB-INF/tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -11,7 +12,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>User Cart</title>
     </head>
-    <body>
+    <body
+        <m:nav/>
         <h1>Shopping Cart for ${sessionScope["sessionuser"]} </h1>
          
        <table>
@@ -50,7 +52,7 @@
        <input type="hidden" name="itemId" value="${current.id}" />
        <input type="submit" value="Clear" name="action">
     </form>
-       <jsp:include page="./nav.jsp" />
+
 
     </body>
 </html>

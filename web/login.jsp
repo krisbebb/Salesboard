@@ -13,6 +13,7 @@
         <title>Show User</title>
     </head>
     <body>
+         <m:nav/>
         <h1> Please enter username to login or create account </h1>
            <form action = "./app/login" method = "GET">
          First Name: <input type = "text" name = "username">
