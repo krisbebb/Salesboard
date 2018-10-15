@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.http.*;
 
 
@@ -64,6 +65,9 @@ LoginHandler()
             HttpSession session = req.getSession();
             String name = (String) req.getParameter("username");
             session.setAttribute("sessionuser", name);
+//           
+//  ServletContext context = getServletContext();
+//            String adminUser = context.getInitParameter("adminUser");
            
             
             System.out.println("sessionuser: " + session.getAttribute("sessionuser"));

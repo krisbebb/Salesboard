@@ -16,6 +16,10 @@
     </head>
     <body>
        <c:remove var="sessionuser"/>
+       <c:remove var="adminUser"/>
+            
+       <c:set var="adminUser" value="${initParam['adminUser']}" scope="session" />
+     
         <h1> Please enter username to login or create account </h1>
            <form action = "./app/login" method = "GET">
          First Name: <input type = "text" name = "username">
