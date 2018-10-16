@@ -36,79 +36,58 @@ CartHandler()
       //Create instance of data access class (Just like in the first assignment)
    {
         HttpSession session = req.getSession();
-       String dbConn = (String)session.getAttribute("dbConn");
-      if(req.getMethod().equalsIgnoreCase("GET"))
-      {
-           System.out.println("WE are in cartHandler GET");
-          
-//           Connection conn = getConnection(false); 
-//              HttpSession session = req.getSession();
-//           String name = (String)session.getAttribute("sessionuser");
-//           try {
-//            int id = Integer.parseInt(req.getParameter("itemId"));
-//            System.out.println("id is: " + id);
-//            System.out.println("sessionuser parameter: " + name);
-//          
-//           }
-//        finally {
-//            conn.close();
-//          }  
-           return "/userCart.jsp";
-           
-      }
-      else if(req.getMethod().equalsIgnoreCase("POST"))
-      {
-                System.out.println("WE are in cartHandler POST");
-                printEnumeration(req,resp);
-                String action = (String)req.getParameter("action");
-//               HttpSession session = req.getSession();
-                if (session.getAttribute("totalPrice") == null) {
-                    session.setAttribute("totalPrice", 0);
-                }
-                
-                if (action.equals("Checkout")){
-                   checkout(req,resp);
-                    return "allItemsReport";
-                }
-                if (action.equals("buy")){
-                    String view = addItemToCart(req,resp);
-                    return view;
-                }
-                
-                if (action.equals("remove")){
-                    removeCartItem(req, resp);
-                    return "/userCart.jsp";
-                }
-                if (action.equals("Clear")) {
-                    session.setAttribute("totalPrice", 0);
-                    session.setAttribute("cartList", null);
-                    return "/userCart.jsp";
-                }
-                
-      }  return null;
-   }
-     private String addItemToCart(HttpServletRequest req, HttpServletResponse resp) throws Exception{
-          HttpSession session = req.getSession();
-       String dbConn = (String)session.getAttribute("dbConn");
-         Connection conn = getConnection(false, dbConn); 
-         try{
-           
-//            HttpSession session = req.getSession();
+        String dbConn = (String)session.getAttribute("dbConn");
+        if(req.getMethod().equalsIgnoreCase("GET"))
+        {
+        System.out.println("WE are in cartHandler GET");
+        return "/userCart.jsp";
+        }
+        else if(req.getMethod().equalsIgnoreCase("POST"))
+        {
+            System.out.println("WE are in cartHandler POST");
+            printEnumeration(req,resp);
+            String action = (String)req.getParameter("action");
+            if (session.getAttribute("totalPrice") == null) {
+                session.setAttribute("totalPrice", 0);
+            }
+            if ((action.equals("Checkout"))){
+                checkout(req,resp);
+                return "allItemsReport";
+            }
+            if (action.equals("buy")){
+                String view = addItemToCart(req,resp);
+                return view;
+            }
+            if (action.equals("remove")){
+                removeCartItem(req, resp);
+                return "/userCart.jsp";
+            }
+            if (action.equals("Clear")) {
+                session.setAttribute("totalPrice", 0);
+                session.setAttribute("cartList", null);
+                return "/userCart.jsp";
+            }
+             if (session.getAttribute("cartList") == null){
+                return "/userCart.jsp";
+            }
+        }  return null;
+    }
+   
+    private String addItemToCart(HttpServletRequest req, HttpServletResponse resp) throws Exception{
+        HttpSession session = req.getSession();
+        String dbConn = (String)session.getAttribute("dbConn");
+        Connection conn = getConnection(false, dbConn); 
+        try{
             String name = (String)session.getAttribute("sessionuser");
             int totalPrice = (int)session.getAttribute("totalPrice");  
-             System.out.println("session totalPrice is " + totalPrice);
+            System.out.println("session totalPrice is " + totalPrice);
             System.out.println("Templist is copied");
-            
-             if (req.getParameter("itemId") == null){
-             System.out.println("itemId is null");
-             return null;
+            if (req.getParameter("itemId") == null){
+                System.out.println("itemId is null");
+                return null;
             }
-           
             int id = Integer.parseInt(req.getParameter("itemId"));
             System.out.println("id is: " + id);
-            
-            
-            
             int itemQty = Integer.parseInt(req.getParameter("itemQty"));
             System.out.println("itemQty is: " + itemQty);
             System.out.println("sessionuser parameter: " + name);
@@ -119,13 +98,11 @@ CartHandler()
             List<itemBean> tempList = new ArrayList<>();
             while (rs.next()) {
                 System.out.println("Printing result...");
-                
                 String seller = rs.getString("seller");
                 String item = rs.getString("item");
                 String description = rs.getString("description");
                 int quantity = itemQty;
                 int price = rs.getInt("price");
-               
                 itemBean itemB = new itemBean(id, seller, item, description,quantity, price);
                 System.out.println("item added to list ");
                 System.out.println("\tID: " + itemB.getId() +
@@ -134,142 +111,121 @@ CartHandler()
                         ", description: " + itemB.getDescription() + 
                         ", quantity: " + itemB.getQuantity() +
                         ", price: " + itemB.getPrice());
-                        totalPrice += itemB.getQuantity() * itemB.getPrice();
-                        System.out.println("Total Price is: " + totalPrice);
-                        session.setAttribute("totalPrice", totalPrice);
-                      tempList.add(itemB);
+                totalPrice += itemB.getQuantity() * itemB.getPrice();
+                System.out.println("Total Price is: " + totalPrice);
+                session.setAttribute("totalPrice", totalPrice);
+                tempList.add(itemB);
             }
             if (session.getAttribute("cartList") == null){
                 System.out.println("cartList is null");
                 session.setAttribute("cartlist", tempList);
                 System.out.println("cartList is created with an item");
-                
             } else {
                 System.out.println("adding new item");
                 List<itemBean> cartList = new ArrayList<>();
                 cartList = (List)session.getAttribute("cartList");
                 session.setAttribute("cartList", tempList.addAll(cartList));
             }
-            
               session.setAttribute("cartList", tempList);
-            
-           }  finally {
+        }  finally {
             conn.close();
-          }  
-    return "/userCart.jsp";
-}
-     private String checkout(HttpServletRequest req, HttpServletResponse resp) throws Exception{
-     
-//                    get item from list
-//                    subtract cart qty from seller qty
-//                    update seller qty db
-//                      add total_price + buyer to sellers table
-//                    repeat
-//                    clear cart list
-//                    return to all items
-         
-//              HttpSession session = req.getSession();
-               HttpSession session = req.getSession();
-       String dbConn = (String)session.getAttribute("dbConn");
-            String name = (String)session.getAttribute("sessionuser");
-             Connection conn = getConnection(false, dbConn); 
-             List<itemBean> cartList = new ArrayList<>();
-                cartList = (List)session.getAttribute("cartList");
-                
-                int totalSpent= 0;
-                while (cartList.isEmpty() == false){
-                    int sellerTotal = 0;
-                itemBean itemB = new itemBean();
-              // get cartlist item 0
-                itemB.setId(cartList.get(0).getId());
-                itemB.setPrice(cartList.get(0).getPrice());
-                itemB.setQuantity(cartList.remove(0).getQuantity());
-                    System.out.println("bean id = " + itemB.getId());
-                    System.out.println("bean qty to remove = " + itemB.getQuantity());
-                    // get data from items
-                    try {
-                        conn = getConnection(false, dbConn); 
-                       PreparedStatement getQty = conn.prepareStatement("select * from items " +
-                "where id = ?");
-                        
-            getQty.setInt(1, itemB.getId());
-            // get items qty, subtract cart qty from items qty
-            // get item price, seller
-            // increment seller total by price
-            ResultSet rs = getQty.executeQuery();
-             while (rs.next()) {
-                 System.out.println("getting qty...");
-                 int qty = rs.getInt("quantity");
-                 String seller = rs.getString("seller");
-                 int price = rs.getInt("price");
-            int newQty = qty - itemB.getQuantity();
-            sellerTotal += price * itemB.getQuantity();
-             
-               // update items table
-                 PreparedStatement editItem = conn.prepareStatement("update items " +
-                "  SET quantity = ? " + 
-                         "where id = ?");
-            editItem.setInt(1, newQty);
-            editItem.setInt(2, itemB.getId());
-            editItem.executeUpdate();
-                System.out.println("executing update...");
-                  conn = getConnection(false, dbConn); 
-                       PreparedStatement getTotal = conn.prepareStatement("select * from sellers " +
-                "where buyer = ? and seller=?");
-                        
-            getTotal.setString(1, name);
-            getTotal.setString(2, seller);
-            
-            ResultSet rsb = getTotal.executeQuery();
-             while (rsb.next()) {
-                 totalSpent = rsb.getInt("total_spent");
-//                 String seller = rsb.getString("seller");
-                 }
-             // add cart totalPrice
-                    // update sellers total_spent
-              System.out.println("Updating sellers table: ");
-//                    int totalPrice = (int)session.getAttribute("totalPrice");
-//                   int  total_spent = 0;
-                    // if record exists
-              PreparedStatement checkBuyer = conn.prepareStatement ("select * from sellers " + 
-                      "where seller = ? and buyer = ?");
-               checkBuyer.setString(1, seller);
-               checkBuyer.setString(2, name);
-              ResultSet existsBuyer = checkBuyer.executeQuery();
-              while (existsBuyer.next()){
-                  System.out.println(existsBuyer.getString("seller"));
-                  System.out.println("Record exists");
-                       PreparedStatement editSeller = conn.prepareStatement("update sellers " +
-                "  SET total_spent = ? " + 
-                         "where buyer = ? and seller = ?");
-            editSeller.setInt(1, totalSpent + sellerTotal);
-            editSeller.setString(2, name);
-            editSeller.setString(3, seller);
-            System.out.println("executing seller update...");
-            editSeller.executeUpdate();
-            session.setAttribute("totalPrice", 0);
-            return "/userCart.jsp";
-                  }
-              
-                System.out.println("no record exists");
-                PreparedStatement insertBuyer = conn.prepareStatement("insert into sellers "+ 
-                        "values (?, ?, ?)");
-                insertBuyer.setString(1, seller);
-                insertBuyer.setString(2, name);
-                insertBuyer.setInt(3, sellerTotal);
-                insertBuyer.executeUpdate();
-                System.out.println("executing seller insert...");
-                session.setAttribute("totalPrice", 0);
-                  
-              }
-                     // get buyers total_spent
-                    } finally {
-                        conn.close();
+        }  
+        return "/userCart.jsp";
+    }
+    
+    private String checkout(HttpServletRequest req, HttpServletResponse resp) throws Exception{
+        HttpSession session = req.getSession();
+        String dbConn = (String)session.getAttribute("dbConn");
+        String name = (String)session.getAttribute("sessionuser");
+        Connection conn = getConnection(false, dbConn); 
+        List<itemBean> cartList = new ArrayList<>();
+        cartList = (List)session.getAttribute("cartList");
+        int totalSpent= 0;
+        while (cartList.isEmpty() == false){
+            int sellerTotal = 0;
+            itemBean itemB = new itemBean();
+            // get cartlist item 0
+            itemB.setId(cartList.get(0).getId());
+            itemB.setPrice(cartList.get(0).getPrice());
+            itemB.setQuantity(cartList.remove(0).getQuantity());
+            System.out.println("bean id = " + itemB.getId());
+            System.out.println("bean qty to remove = " + itemB.getQuantity());
+            // get data from items
+            try {
+                conn = getConnection(false, dbConn); 
+                PreparedStatement getQty = conn.prepareStatement("select * from items " +
+                    "where id = ?");
+                getQty.setInt(1, itemB.getId());
+                // get items qty, subtract cart qty from items qty
+                // get item price, seller
+                // increment seller total by price
+                ResultSet rs = getQty.executeQuery();
+                while (rs.next()) {
+                    System.out.println("getting qty...");
+                    int qty = rs.getInt("quantity");
+                    String seller = rs.getString("seller");
+                    int price = rs.getInt("price");
+                    int newQty = qty - itemB.getQuantity();
+                    sellerTotal += price * itemB.getQuantity();
+                    // update items table
+                    PreparedStatement editItem = conn.prepareStatement("update items " +
+                        "  SET quantity = ? " + 
+                        "where id = ?");
+                    editItem.setInt(1, newQty);
+                    editItem.setInt(2, itemB.getId());
+                    editItem.executeUpdate();
+                    System.out.println("executing update...");
+                    conn = getConnection(false, dbConn); 
+                    PreparedStatement getTotal = conn.prepareStatement("select * from sellers " +
+                        "where buyer = ? and seller=?");
+                    getTotal.setString(1, name);
+                    getTotal.setString(2, seller);
+                    ResultSet rsb = getTotal.executeQuery();
+                    while (rsb.next()) {
+                        totalSpent = rsb.getInt("total_spent");
                     }
-                    // else
-                    // insert record for seller, with buyer and total price
-             }  return "/userCart.jsp";
-     }
+                    // add cart totalPrice
+                    // update sellers total_spent
+                    System.out.println("Updating sellers table: ");
+                    // if record exists
+                    PreparedStatement checkBuyer = conn.prepareStatement ("select * from sellers " + 
+                        "where seller = ? and buyer = ?");
+                    checkBuyer.setString(1, seller);
+                    checkBuyer.setString(2, name);
+                    ResultSet existsBuyer = checkBuyer.executeQuery();
+                    while (existsBuyer.next()){
+                        System.out.println(existsBuyer.getString("seller"));
+                        System.out.println("Record exists");
+                        PreparedStatement editSeller = conn.prepareStatement("update sellers " +
+                             "  SET total_spent = ? " + 
+                             "where buyer = ? and seller = ?");
+                        editSeller.setInt(1, totalSpent + sellerTotal);
+                        editSeller.setString(2, name);
+                        editSeller.setString(3, seller);
+                        System.out.println("executing seller update...");
+                        editSeller.executeUpdate();
+                        session.setAttribute("totalPrice", 0);
+                        return "/userCart.jsp";
+                    }
+                    System.out.println("no record exists");
+                    PreparedStatement insertBuyer = conn.prepareStatement("insert into sellers "+ 
+                            "values (?, ?, ?)");
+                    insertBuyer.setString(1, seller);
+                    insertBuyer.setString(2, name);
+                    insertBuyer.setInt(3, sellerTotal);
+                    insertBuyer.executeUpdate();
+                    System.out.println("executing seller insert...");
+                    session.setAttribute("totalPrice", 0);
+                }
+                // get buyers total_spent
+            } finally {
+                conn.close();
+            }
+            // else
+            // insert record for seller, with buyer and total price
+        }  return "/userCart.jsp";
+    }
+    
     private void printEnumeration(HttpServletRequest req, HttpServletResponse resp){
          Enumeration<String> parameterNames = req.getParameterNames();
         while (parameterNames.hasMoreElements()) {
@@ -304,40 +260,31 @@ CartHandler()
     }
 
     private void removeCartItem(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-      int listItem = Integer.parseInt(req.getParameter("listItem"));
+        int listItem = Integer.parseInt(req.getParameter("listItem"));
         HttpSession session = req.getSession();
         int totalPrice = (int)session.getAttribute("totalPrice");
-       List<itemBean> tempList = new ArrayList<>();
-                tempList = (List)session.getAttribute("cartList");
-       int i = 0;
-       if (tempList == null) {
-           System.out.println("cartlist is null");
-           System.out.println("clearing totalPrice");
-           totalPrice = 0;
-       }
-       
-           
-           for (Iterator<itemBean> iter = tempList.listIterator(); 
-                   iter.hasNext(); ) 
-           {
+        List<itemBean> tempList = new ArrayList<>();
+        tempList = (List)session.getAttribute("cartList");
+        int i = 0;
+        if (tempList == null) {
+            System.out.println("cartlist is null");
+            System.out.println("clearing totalPrice");
+            totalPrice = 0;
+        }
+        for (Iterator<itemBean> iter = tempList.listIterator(); 
+        iter.hasNext(); ) 
+        {
             itemBean a = iter.next();
             if (a.getId() == listItem) {
                 System.out.println("list position is " + i);
-          
-               System.out.println("found!");
-               
-               // subtract quantity * total from cartTotal
-               totalPrice -= a.getQuantity() * a.getPrice();
-               session.setAttribute("totalPrice", totalPrice);
+                System.out.println("found!");
+                // subtract quantity * total from cartTotal
+                totalPrice -= a.getQuantity() * a.getPrice();
+                session.setAttribute("totalPrice", totalPrice);
                 iter.remove();
+            }
+        }
     }
-}
-          
-       }
-    
-    
-    
-  
 }
 
 

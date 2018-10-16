@@ -9,7 +9,10 @@
             30
         </session-timeout>
     </session-config>
-   
+    <context-param>
+      <param-name>adminUser</param-name>
+      <param-value>George</param-value>
+    </context-param>
      <context-param>
       <param-name>dbConn</param-name>
       <param-value>jdbc:derby://localhost:1527/salesboard</param-value>

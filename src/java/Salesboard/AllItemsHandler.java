@@ -33,47 +33,14 @@ AllItemsHandler()
    public String handleRequest(HttpServletRequest req, HttpServletResponse resp) throws Exception
       //Create instance of data access class (Just like in the first assignment)
    {
-        HttpSession session = req.getSession();
-       String dbConn = (String)session.getAttribute("dbConn");
+
       if(req.getMethod().equalsIgnoreCase("GET"))
       {
            System.out.println("WE are in allItemsHandler GET");
-       
-        Connection conn = getConnection(false, dbConn);
-        try {
-//             HttpSession session = req.getSession();
-            String name = (String) req.getParameter("username");
-            System.out.println(name);
+       // get all items
 
-            PreparedStatement allItems = conn.prepareStatement("select * from items ");
-//            allItems.setString(1, name);
-            ResultSet rs = allItems.executeQuery();
-            List<itemBean> itemList = new ArrayList<>();
-            while (rs.next()) {
-                System.out.println("Printing result...");
-                int id = rs.getInt("id");
-                String seller = rs.getString("seller");
-                String item = rs.getString("item");
-                String description = rs.getString("description");
-                int quantity = rs.getInt("quantity");
-                int price = rs.getInt("price");
-               
-                itemBean itemB = new itemBean(id, seller, item, description,quantity, price);
-                
-                      itemList.add(itemB);
-                System.out.println("\tID: " + itemB.getId() +
-                        ", seller: " + itemB.getSeller() + 
-                       ", item: " + itemB.getItem() +
-                        ", description: " + itemB.getDescription() + 
-                        ", quantity: " + itemB.getQuantity() +
-                        ", price: " + itemB.getPrice());
-            }
-              req.setAttribute("itemList", itemList);
-            }
-        finally {
-            conn.close();
-          }  
-          return "/salesBoard.jsp";
+           reportAllItems(req, resp);
+           return "/salesBoard.jsp";
       }
       else if(req.getMethod().equalsIgnoreCase("POST"))
       {
@@ -81,45 +48,13 @@ AllItemsHandler()
                printEnumeration(req,resp);
          String action = req.getParameter("action");
           System.out.println("Action is: " + action);
+          // search
           if (action.equals("search")){
               String view = searchFilter(req, resp);
               return view;
           }
-       Connection conn = getConnection(false, dbConn);
-        try {
-//             HttpSession session = req.getSession();
-            String name = (String) req.getParameter("username");
-            System.out.println(name);
-
-            PreparedStatement allItems = conn.prepareStatement("select * from items ");
-//            allItems.setString(1, name);
-            ResultSet rs = allItems.executeQuery();
-            List<itemBean> itemList = new ArrayList<>();
-            while (rs.next()) {
-                System.out.println("Printing result...");
-                int id = rs.getInt("id");
-                String seller = rs.getString("seller");
-                String item = rs.getString("item");
-                String description = rs.getString("description");
-                int quantity = rs.getInt("quantity");
-                int price = rs.getInt("price");
-               
-                itemBean itemB = new itemBean(id, seller, item, description,quantity, price);
-                
-                      itemList.add(itemB);
-                System.out.println("\tID: " + itemB.getId() +
-                        ", seller: " + itemB.getSeller() + 
-                       ", item: " + itemB.getItem() +
-                        ", description: " + itemB.getDescription() + 
-                        ", quantity: " + itemB.getQuantity() +
-                        ", price: " + itemB.getPrice());
-            }
-              req.setAttribute("itemList", itemList);
-            }
-        finally {
-            conn.close();
-          }  
-          return "/salesBoard.jsp";
+          reportAllItems(req, resp);
+              return "/salesBoard.jsp";
       }
        return null;
    }
@@ -165,9 +100,7 @@ AllItemsHandler()
                 String description = rs.getString("description");
                 int quantity = rs.getInt("quantity");
                 int price = rs.getInt("price");
-               
                 itemBean itemB = new itemBean(id, seller, item, description,quantity, price);
-                
                       itemList.add(itemB);
                 System.out.println("\tID: " + itemB.getId() +
                         ", seller: " + itemB.getSeller() + 
@@ -192,10 +125,42 @@ AllItemsHandler()
             for (int i = 0; i < paramValues.length; i++) {
                 String paramValue = paramValues[i];
                 System.out.println(paramName + "\t" + paramValue);
-                
             }
         }
     }
+        private void reportAllItems(HttpServletRequest req,HttpServletResponse resp) throws Exception {
+            HttpSession session = req.getSession();
+             String dbConn = (String)session.getAttribute("dbConn"); 
+            Connection conn = getConnection(false, dbConn);
+        try {
+            String name = (String) req.getParameter("username");
+            System.out.println(name);
+            PreparedStatement allItems = conn.prepareStatement("select * from items ");
+            ResultSet rs = allItems.executeQuery();
+            List<itemBean> itemList = new ArrayList<>();
+            while (rs.next()) {
+                System.out.println("Printing result...");
+                int id = rs.getInt("id");
+                String seller = rs.getString("seller");
+                String item = rs.getString("item");
+                String description = rs.getString("description");
+                int quantity = rs.getInt("quantity");
+                int price = rs.getInt("price");
+                itemBean itemB = new itemBean(id, seller, item, description,quantity, price);
+                      itemList.add(itemB);
+                System.out.println("\tID: " + itemB.getId() +
+                        ", seller: " + itemB.getSeller() + 
+                       ", item: " + itemB.getItem() +
+                        ", description: " + itemB.getDescription() + 
+                        ", quantity: " + itemB.getQuantity() +
+                        ", price: " + itemB.getPrice());
+            }
+              req.setAttribute("itemList", itemList);
+            }
+        finally {
+            conn.close();
+          }  
+        }
 }
 
 

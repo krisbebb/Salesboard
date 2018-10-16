@@ -11,7 +11,7 @@
 <m:header/>
 <div class="container">
        <c:remove var="sessionuser"/>
-       <c:remove var="adminUser"/>
+       
             
        <c:set var="adminUser" value="${initParam['adminUser']}" scope="session" />
        <c:set var="dbConn" value="${initParam['dbConn']}" scope="session" />
@@ -19,16 +19,18 @@
         <h1> Salesboard </h1>
         <h2> Enter Username </h2>
         
-        <form class="form-inline" action = "./app/login" method = "GET">
+        <form class="form-inline" action = "/Ass2_Salesboard/app/login" method = "GET">
             <div class="form-group form-inline mx-2">
             <label for="usernameInput" class="form-control-plaintext mx-2">Username: </label>
             </div>
             <input type="text" class="form-control" name = "username" value="George">
             <input class="btn btn-primary mx-2 " type = "submit" value = "Submit" />
-            </div>
+           
 
-         </div>
+       
       </form> 
+        <div class="alert-danger" role="alert">
+            ${message}</div>
         </div>
            <m:footer/>
     
