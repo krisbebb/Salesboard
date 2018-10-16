@@ -113,9 +113,6 @@ public class FrontController extends HttpServlet {
         pathsToHandlers.put("/searchQuery", "Salesboard.AllItemsHandler");
         pathsToHandlers.put("/admin", "Salesboard.AllItemsHandler");
         
-                
-//        pathsToHandlers.put("userHome.jsp", "Salesboard.userHandler");
-//     pathsToHandlers.put("/movieDetails", "Salesboard.MovieDetails");
      
   }
   
@@ -154,9 +151,9 @@ public class FrontController extends HttpServlet {
     String dbConn = getServletContext().getInitParameter("dbConn");
           System.out.println("request path is :"+ path + " handerClass is: " + handlerClass);
       System.out.println("db path is: "+ dbConn);
-      HttpSession session = request.getSession();
-      session.setAttribute("dbConn", dbConn);
-      
+//      HttpSession session = request.getSession();
+//      session.setAttribute("dbConn", dbConn);
+      if (handlerClass != null) {
     Handler handler = getHandlerInstance(handlerClass);
       String viewPath = handler.handleRequest(request, response);
       
@@ -167,8 +164,12 @@ public class FrontController extends HttpServlet {
         
       
         rd.forward(request, response);
+        
+      }
       }
       System.out.println("We have null and got here");
+      System.out.println(request.getPathInfo());
+      
 //      this.getServletContext().getRequestDispatcher("/view.jsp");
      
       

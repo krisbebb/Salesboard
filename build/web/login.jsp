@@ -19,7 +19,7 @@
         <h1> Salesboard </h1>
         <h2> Enter Username </h2>
         
-        <form class="form-inline" action = "./app/login" method = "GET">
+        <form class="form-inline" action = "/Ass2_Salesboard/app/login" method = "GET">
             <div class="form-group form-inline mx-2">
             <label for="usernameInput" class="form-control-plaintext mx-2">Username: </label>
             </div>
@@ -29,6 +29,7 @@
 
          </div>
       </form> 
+        <h2>${message}</h2>
         </div>
            <m:footer/>
     

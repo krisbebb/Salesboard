@@ -41,6 +41,13 @@ LoginHandler()
            
 //           HttpSession session = req.getSession();
             String name = (String) req.getParameter("username");
+            if (name == null || name.isEmpty()){
+                req.setAttribute("message", "No username. Please enter a username");
+                System.out.println("we have no username");
+//                RequestDispatcher dispatcher = req.getRequestDispatcher("login");
+//       dispatcher.forward(req, resp);
+            return "/login.jsp";
+            }
             session.setAttribute("sessionuser", name);
            
             
