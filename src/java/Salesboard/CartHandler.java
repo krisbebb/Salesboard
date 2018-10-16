@@ -35,6 +35,8 @@ CartHandler()
    public String handleRequest(HttpServletRequest req, HttpServletResponse resp) throws Exception
       //Create instance of data access class (Just like in the first assignment)
    {
+        HttpSession session = req.getSession();
+       String dbConn = (String)session.getAttribute("dbConn");
       if(req.getMethod().equalsIgnoreCase("GET"))
       {
            System.out.println("WE are in cartHandler GET");
@@ -59,7 +61,7 @@ CartHandler()
                 System.out.println("WE are in cartHandler POST");
                 printEnumeration(req,resp);
                 String action = (String)req.getParameter("action");
-               HttpSession session = req.getSession();
+//               HttpSession session = req.getSession();
                 if (session.getAttribute("totalPrice") == null) {
                     session.setAttribute("totalPrice", 0);
                 }
@@ -86,10 +88,12 @@ CartHandler()
       }  return null;
    }
      private String addItemToCart(HttpServletRequest req, HttpServletResponse resp) throws Exception{
-           Connection conn = getConnection(false); 
+          HttpSession session = req.getSession();
+       String dbConn = (String)session.getAttribute("dbConn");
+         Connection conn = getConnection(false, dbConn); 
          try{
            
-            HttpSession session = req.getSession();
+//            HttpSession session = req.getSession();
             String name = (String)session.getAttribute("sessionuser");
             int totalPrice = (int)session.getAttribute("totalPrice");  
              System.out.println("session totalPrice is " + totalPrice);
@@ -164,9 +168,11 @@ CartHandler()
 //                    clear cart list
 //                    return to all items
          
-              HttpSession session = req.getSession();
+//              HttpSession session = req.getSession();
+               HttpSession session = req.getSession();
+       String dbConn = (String)session.getAttribute("dbConn");
             String name = (String)session.getAttribute("sessionuser");
-             Connection conn = getConnection(false); 
+             Connection conn = getConnection(false, dbConn); 
              List<itemBean> cartList = new ArrayList<>();
                 cartList = (List)session.getAttribute("cartList");
                 
@@ -182,7 +188,7 @@ CartHandler()
                     System.out.println("bean qty to remove = " + itemB.getQuantity());
                     // get data from items
                     try {
-                        conn = getConnection(false); 
+                        conn = getConnection(false, dbConn); 
                        PreparedStatement getQty = conn.prepareStatement("select * from items " +
                 "where id = ?");
                         
@@ -207,7 +213,7 @@ CartHandler()
             editItem.setInt(2, itemB.getId());
             editItem.executeUpdate();
                 System.out.println("executing update...");
-                  conn = getConnection(false); 
+                  conn = getConnection(false, dbConn); 
                        PreparedStatement getTotal = conn.prepareStatement("select * from sellers " +
                 "where buyer = ? and seller=?");
                         
@@ -278,13 +284,13 @@ CartHandler()
         }
     }
 
-    private Connection getConnection(boolean createDatabase) throws SQLException {
+    private Connection getConnection(boolean createDatabase, String dbConn) throws SQLException {
     checkDriverLoaded();
     String attributes = "";
     if (createDatabase) {
         attributes = ";create=true";
     }
-        Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/salesboard" + attributes);
+        Connection conn = DriverManager.getConnection(dbConn + attributes);
         return conn;
     }
 

@@ -17,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 
 /**
@@ -150,9 +151,13 @@ public class FrontController extends HttpServlet {
     // b. Return null to indicate to the front controller that a redirect has been sent to the client by the handler. In this case the front controller should take no further action.
     String path = request.getPathInfo();
     String handlerClass = pathsToHandlers.get(path);
-    
-      System.out.println("request path is :"+ path + " handerClass is: " + handlerClass);
-      Handler handler = getHandlerInstance(handlerClass);
+    String dbConn = getServletContext().getInitParameter("dbConn");
+          System.out.println("request path is :"+ path + " handerClass is: " + handlerClass);
+      System.out.println("db path is: "+ dbConn);
+      HttpSession session = request.getSession();
+      session.setAttribute("dbConn", dbConn);
+      
+    Handler handler = getHandlerInstance(handlerClass);
       String viewPath = handler.handleRequest(request, response);
       
       

@@ -32,13 +32,16 @@ SellerHandler()
    public String handleRequest(HttpServletRequest req, HttpServletResponse resp) throws Exception
       //Create instance of data access class (Just like in the first assignment)
    {
+       HttpSession session = req.getSession();
+       String dbConn = (String)session.getAttribute("dbConn");
+      
       if(req.getMethod().equalsIgnoreCase("GET"))
       {
         
           System.out.println("WE are in sellerHandler GET");
-           HttpSession session = req.getSession();
+//           HttpSession session = req.getSession();
           String name = (String)session.getAttribute("sessionuser");
-          Connection conn = getConnection(false);
+          Connection conn = getConnection(false, dbConn);
         try {
             
            
@@ -104,13 +107,14 @@ SellerHandler()
    }
 
     
-    private Connection getConnection(boolean createDatabase) throws SQLException {
+    private Connection getConnection(boolean createDatabase, String dbConn) throws SQLException {
     checkDriverLoaded();
     String attributes = "";
+        System.out.println("DBCONN IS: " + dbConn);
     if (createDatabase) {
         attributes = ";create=true";
     }
-        Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/salesboard" + attributes);
+        Connection conn = DriverManager.getConnection(dbConn + attributes);
         return conn;
     }
 

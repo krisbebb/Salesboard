@@ -14,6 +14,7 @@
        <c:remove var="adminUser"/>
             
        <c:set var="adminUser" value="${initParam['adminUser']}" scope="session" />
+       <c:set var="dbConn" value="${initParam['dbConn']}" scope="session" />
      
         <h1> Salesboard </h1>
         <h2> Enter Username </h2>
