@@ -8,7 +8,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
     <m:header title="Add Item"/>
-    <m:nav/>
+    <m:nav sessionBean="${sessionScope["sessionBean"]}"/>
     <div class="container">
         <h1>Add Item</h1>
         <m:addItemForm/>

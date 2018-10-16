@@ -70,14 +70,18 @@ EditUserHandler()
                 if (action.equals("edit")) {
                     int age = Integer.parseInt(req.getParameter("age"));
                     String address = req.getParameter("address");
+                    String fullname = req.getParameter("name");
                     PreparedStatement editUser = conn.prepareStatement("update users " +
-                    "  SET age = ?, address = ? " + 
+                    "  SET name = ?, age = ?, address = ? " + 
                              "where username = ?");
-                    editUser.setInt(1, age);
-                    editUser.setString(2, address);
-                    editUser.setString(3, name);
+                    editUser.setString(1, fullname);
+                    editUser.setInt(2, age);
+                    editUser.setString(3, address);
+                    editUser.setString(4, name);
                     editUser.executeUpdate();
                     System.out.println("executing update...");
+                    userBean sessionBean = new userBean(name,fullname, age, address);
+                    session.setAttribute("sessionBean", sessionBean);
                 }
             }
             finally {

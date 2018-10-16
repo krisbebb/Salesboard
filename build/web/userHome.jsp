@@ -7,20 +7,17 @@
 <%@ taglib prefix="m" tagdir="/WEB-INF/tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
         <m:header title="Home"/>
-        <m:nav/>
+        <m:nav sessionBean="${sessionScope["sessionBean"]}"/>
         <div class="container">
         <h1>Home Page for ${sessionScope["sessionuser"]} </h1>
         <hr>
         <br>
         <h2> My Items for Sale </h2>
         <m:sellerList sellerList="${sellerList}"/>
-        
-    
         <hr>
         <br>
         <h2>My Customers </h2>
         <m:buyerList buyerList="${buyerList}"/>
         </div>
-        
         <m:footer/>
 

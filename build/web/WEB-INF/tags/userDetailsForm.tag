@@ -5,13 +5,12 @@
 --%>
 <%@ attribute name="userBean" required="true" rtexprvalue="true" type="Salesboard.userBean"%>
 
-
        <form  action='userDetails.jsp' method="post">
            <div class = "form-group my-3">
-            Age: <input type="text" name="age" value="${userBean.age}">
-            </div>
             <div class = "form-group">
-            Name: <input type="text" name="address" value="${userBean.name}">
+            Name: <input type="text" name="name" value="${userBean.name}">
+            </div>
+            Age: <input type="text" name="age" value="${userBean.age}">
             </div>
             <div class = "form-group">
             Address: <input type="text" name="address" value="${userBean.address}">

@@ -7,7 +7,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="m" tagdir="/WEB-INF/tags" %>
     <m:header title="SalesBoard"/>
-    <m:nav/>
+    <m:nav sessionBean="${sessionScope["sessionBean"]}"/>
     <div class="container">
         <h1> Salesboard</h1>
         <m:searchForm/>

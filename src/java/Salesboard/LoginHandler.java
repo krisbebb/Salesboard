@@ -182,6 +182,8 @@ LoginHandler()
         ResultSet rsb = userQuery.executeQuery();
         if (rsb.next()) {
             System.out.println("User exists.");
+            userBean sessionBean = new userBean(name, rsb.getString("name"), rsb.getInt("age"), rsb.getString("address"));
+            session.setAttribute("sessionBean", sessionBean);
             conn.close();
             return true;
         } else {
