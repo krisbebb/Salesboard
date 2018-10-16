@@ -64,9 +64,12 @@ CartHandler()
 //               HttpSession session = req.getSession();
                 if (session.getAttribute("totalPrice") == null) {
                     session.setAttribute("totalPrice", 0);
+                    
                 }
-                
-                if (action.equals("Checkout")){
+                if (session.getAttribute("cartList") == null){
+                    return "/userCart.jsp";
+                }
+                if ((action.equals("Checkout"))){
                    checkout(req,resp);
                     return "allItemsReport";
                 }
@@ -174,6 +177,7 @@ CartHandler()
             String name = (String)session.getAttribute("sessionuser");
              Connection conn = getConnection(false, dbConn); 
              List<itemBean> cartList = new ArrayList<>();
+             
                 cartList = (List)session.getAttribute("cartList");
                 
                 int totalSpent= 0;

@@ -27,7 +27,7 @@ public class ItemHandler implements Handler
    //It needs a no argument constructor so the front controller 
    //can instantiate it using reflection
   
-ItemHandler(String dbConn)
+ItemHandler()
    { }
  
  @Override

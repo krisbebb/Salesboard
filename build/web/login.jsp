@@ -11,7 +11,7 @@
 <m:header/>
 <div class="container">
        <c:remove var="sessionuser"/>
-       <c:remove var="adminUser"/>
+       
             
        <c:set var="adminUser" value="${initParam['adminUser']}" scope="session" />
        <c:set var="dbConn" value="${initParam['dbConn']}" scope="session" />
@@ -25,11 +25,12 @@
             </div>
             <input type="text" class="form-control" name = "username" value="George">
             <input class="btn btn-primary mx-2 " type = "submit" value = "Submit" />
-            </div>
+           
 
-         </div>
+       
       </form> 
-        <h2>${message}</h2>
+        <div class="alert-danger" role="alert">
+            ${message}</div>
         </div>
            <m:footer/>
     
