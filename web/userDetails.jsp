@@ -11,7 +11,9 @@
         <div class="container">
         <h1> Edit User ${userBean.username} </h1>
         
-         <m:userDetailsForm userBean="${userBean}"/>
-         
+        <m:userDetailsForm userBean="${userBean}"/>
+        <div class ="alert-danger" role="alert">
+            ${message}
+        </div>
         </div>
         <m:footer/>

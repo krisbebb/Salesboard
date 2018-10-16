@@ -33,10 +33,12 @@ EditUserHandler()
         String dbConn = (String)session.getAttribute("dbConn");
         if(req.getMethod().equalsIgnoreCase("GET"))
         {
-            String name = (String)session.getAttribute("sessionuser");
-            
+            if (session.getAttribute("error") != null){
+                req.setAttribute("message", "Please fill in all fields");
+            }
             Connection conn = getConnection(false, dbConn);
             try {
+                String name = (String)session.getAttribute("sessionuser");
                 PreparedStatement selectUser = conn.prepareStatement("select * from users " +
                     "where username = ?");
                 selectUser.setString(1, name);
@@ -46,15 +48,14 @@ EditUserHandler()
                     String fullName = rs.getString("name");
                     int age = rs.getInt("age");
                     String address = rs.getString("address");
-                    
                     userBean user = new userBean(uname, fullName, age, address);
                     req.setAttribute("userBean", user);
                 }
             }
             finally {
             conn.close();
-             }  
-             return "/userDetails.jsp";
+            }  
+            return "/userDetails.jsp";
         }
         else if(req.getMethod().equalsIgnoreCase("POST"))
         {
@@ -67,7 +68,6 @@ EditUserHandler()
             }
             int age = 0;
             try {
-//                if (action.equals("edit")) {
                     if (isNumber(req.getParameter("age"))){
                         age = Integer.parseInt(req.getParameter("age"));
                     }
@@ -76,7 +76,7 @@ EditUserHandler()
                     String fullname = req.getParameter("name");
                     while (name.isEmpty() ||fullname.isEmpty() || address.isEmpty() || (age<10))
                     {
-                        req.setAttribute("message", "Please complete all fields");
+                        session.setAttribute("error", "Invalid input");
                         resp.sendRedirect("userDetails");
                         return null;
                     }
