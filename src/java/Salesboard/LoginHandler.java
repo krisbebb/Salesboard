@@ -50,7 +50,7 @@ LoginHandler()
             boolean userExists = checkForUser(req, resp);
             if (!userExists) {
                 System.out.println("!userExists is true ie user does NOT exist");
-                return "userDetails.jsp";
+                return "/userDetails";
             }
            // get buyer report
             sellerReport(req, resp);
@@ -67,7 +67,7 @@ LoginHandler()
             boolean userExists = checkForUser(req, resp);
             if (!userExists) {
                 System.out.println("!userExists is true ie user does NOT exist");
-                return "userDetails.jsp";
+                return "userDetails";
            }
            // get buyer report
             sellerReport(req, resp);

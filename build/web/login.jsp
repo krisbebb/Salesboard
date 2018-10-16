@@ -11,13 +11,15 @@
         <m:header title="Login"/>
         <div class="container">
             <c:remove var="sessionuser"/>
+            
             <c:set var="adminUser" value="${initParam['adminUser']}" scope="session" />
             <c:set var="dbConn" value="${initParam['dbConn']}" scope="session" />
             <h1> Salesboard </h1>
             <h2> Enter Username </h2>
             <m:loginForm/>
             <div class="alert-danger" role="alert">
-             ${message}
+            ${message}
+            
             </div>
         </div>
         <m:footer/>

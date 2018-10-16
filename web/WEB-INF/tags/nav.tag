@@ -16,7 +16,7 @@
     <a class="nav-link" href="./allItemsReport">Salesboard</a>
     </li>
     <li class="nav-item">
-    <a class="nav-link" href="./userDetails.jsp">Edit User Details</a>
+    <a class="nav-link" href="./userDetails">Edit User Details</a>
     </li>
     <li class="nav-item">
     <a class="nav-link" href="./buyItem">Shopping Cart</a>

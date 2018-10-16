@@ -35,6 +35,7 @@ EditUserHandler()
         {
             System.out.println("WE are in editUserHandler GET");
             String name = (String)session.getAttribute("sessionuser");
+            
             Connection conn = getConnection(false, dbConn);
             try {
                 System.out.println(name);
@@ -48,6 +49,7 @@ EditUserHandler()
                     String fullName = rs.getString("name");
                     int age = rs.getInt("age");
                     String address = rs.getString("address");
+                    
                     userBean user = new userBean(uname, fullName, age, address);
                     req.setAttribute("userBean", user);
                     System.out.println("\tUsername: " + uname +
@@ -66,11 +68,26 @@ EditUserHandler()
             String name = (String)session.getAttribute("sessionuser");
             Connection conn = getConnection(false, dbConn);
             String action = req.getParameter("action");
+            
+            if (action.equals("cancel")){
+                resp.sendRedirect("sellerReport");
+            }
+            int age = 0;
             try {
-                if (action.equals("edit")) {
-                    int age = Integer.parseInt(req.getParameter("age"));
+//                if (action.equals("edit")) {
+                    if (isNumber(req.getParameter("age"))){
+                        age = Integer.parseInt(req.getParameter("age"));
+                    }
+                    
                     String address = req.getParameter("address");
                     String fullname = req.getParameter("name");
+                    while (name.isEmpty() ||fullname.isEmpty() || address.isEmpty() || (age<10))
+                    {
+                        System.out.println("invalid input");
+                        req.setAttribute("message", "Please complete all fields");
+                        resp.sendRedirect("userDetails");
+                        return null;
+                    }
                     PreparedStatement editUser = conn.prepareStatement("update users " +
                     "  SET name = ?, age = ?, address = ? " + 
                              "where username = ?");
@@ -82,7 +99,7 @@ EditUserHandler()
                     System.out.println("executing update...");
                     userBean sessionBean = new userBean(name,fullname, age, address);
                     session.setAttribute("sessionBean", sessionBean);
-                }
+//                }
             }
             finally {
              conn.close();
@@ -111,6 +128,18 @@ EditUserHandler()
             throw new RuntimeException("An error occrred loading jdbc driver", ex);
         }
     }
+private boolean isNumber(String value)
+{
+  try
+  {
+    Double.valueOf(value);
+    return true;
+  }
+  catch (NumberFormatException numx)
+  {
+    return false;
+  }
+}
 
 }
 
