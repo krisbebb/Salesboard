@@ -66,9 +66,7 @@ CartHandler()
                     session.setAttribute("totalPrice", 0);
                     
                 }
-                if (session.getAttribute("cartList") == null){
-                    return "/userCart.jsp";
-                }
+               
                 if ((action.equals("Checkout"))){
                    checkout(req,resp);
                     return "allItemsReport";
@@ -85,6 +83,9 @@ CartHandler()
                 if (action.equals("Clear")) {
                     session.setAttribute("totalPrice", 0);
                     session.setAttribute("cartList", null);
+                    return "/userCart.jsp";
+                }
+                 if (session.getAttribute("cartList") == null){
                     return "/userCart.jsp";
                 }
                 
