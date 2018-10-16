@@ -19,13 +19,15 @@
         <h2> Enter Username </h2>
         
         <form class="form-inline" action = "./app/login" method = "GET">
-            <div class="form-group mx-2">
-                <label for="usernameInput" >Username: </label>
+            <div class="form-group form-inline mx-2">
+            <label for="usernameInput" class="form-control-plaintext mx-2">Username: </label>
+            </div>
             <input type="text" class="form-control" name = "username" value="George">
+            <input class="btn btn-primary mx-2 " type = "submit" value = "Submit" />
+            </div>
+
          </div>
-      
-         <input class="btn btn-primary mx-2 " type = "submit" value = "Submit" />
-        
       </form> 
         </div>
            <m:footer/>
+    

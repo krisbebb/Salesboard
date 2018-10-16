@@ -38,12 +38,26 @@
             <td><c:out value="${current.price}" /></td>
             <td>
                 
-            <form action="viewItem" method="GET">
-                <div class="form-group">
-                <input type="hidden" name="itemId" value="${current.id}" />
-                <input class="btn btn-primary" type="submit" value="view" name="action">
-                </div>
-           </form>
+                <c:choose>
+                <c:when test = "${sessionScope.adminUser == sessionScope.sessionuser}">
+                      <form action="viewItem" method="POST">
+                    <div class="form-group">
+                        <input type="hidden" name="itemId" value="${current.id}" />
+                        <input class="btn btn-primary" type="submit" value="delete" name="action">
+                    </div>
+                    </form>
+                </c:when>
+                
+                <c:otherwise>
+                <form action="viewItem" method="GET">
+                    <div class="form-group">
+                        <input type="hidden" name="itemId" value="${current.id}" />
+                        <input class="btn btn-primary" type="submit" value="view" name="action">
+                    </div>
+                </form>
+                </c:otherwise>
+                </c:choose>
+           
                
                </td>
             

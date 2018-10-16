@@ -25,7 +25,7 @@
    
     <c:if test="${sessionScope.adminUser == sessionScope.sessionuser}">
         <li class="nav-item">
-        <a class="nav-link" href="./admin.jsp">Admin</a>
+        <a class="nav-link" href="./admin">Admin</a>
         </li>
 </c:if>
         </ul>
