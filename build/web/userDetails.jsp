@@ -6,7 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="m" tagdir="/WEB-INF/tags" %>
-        <m:header/>
+        <<m:header title="Edit Details"/>
         <m:nav/>
         <div class="container">
         <h1> Edit User ${userBean.username} </h1>

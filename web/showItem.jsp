@@ -6,7 +6,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="m" tagdir="/WEB-INF/tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<m:header/>
+<m:header title="View Item"/>
          <m:nav/>
          <div class="container">
         <h1>Item Details</h1>
