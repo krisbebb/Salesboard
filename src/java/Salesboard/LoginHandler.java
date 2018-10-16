@@ -37,7 +37,7 @@ LoginHandler()
         String dbConn = (String)session.getAttribute("dbConn");
         if(req.getMethod().equalsIgnoreCase("GET"))
         {
-            String name = (String) req.getParameter("username");
+            String name = req.getParameter("username");
             if (name == null || name.isEmpty()){
                 req.setAttribute("message", "Please enter a value");
                 return "/login.jsp";
@@ -55,7 +55,7 @@ LoginHandler()
         }
         else if(req.getMethod().equalsIgnoreCase("POST"))
         {
-            String name = (String) req.getParameter("username");
+            String name = req.getParameter("username");
             session.setAttribute("sessionuser", name);
             boolean userExists = checkForUser(req, resp);
             if (!userExists) {
@@ -92,7 +92,7 @@ LoginHandler()
     HttpSession session = req.getSession();
     String dbConn = (String)session.getAttribute("dbConn");
     Connection conn = getConnection(false, dbConn);
-    String name = (String) req.getParameter("username");
+    String name = req.getParameter("username");
     session.setAttribute("sessionuser", name);
     try {
         PreparedStatement sellerItems = conn.prepareStatement("select * from items " + 
@@ -121,7 +121,7 @@ LoginHandler()
     HttpSession session = req.getSession();
     String dbConn = (String)session.getAttribute("dbConn");
     Connection conn = getConnection(false, dbConn);
-    String name = (String) req.getParameter("username");
+    String name = req.getParameter("username");
     session.setAttribute("sessionuser", name);
     try {
         session.setAttribute("sessionuser", name);
@@ -147,7 +147,7 @@ LoginHandler()
     HttpSession session = req.getSession();
     String dbConn = (String)session.getAttribute("dbConn");
     Connection conn = getConnection(false, dbConn);
-    String name = (String) req.getParameter("username");
+    String name = req.getParameter("username");
     session.setAttribute("sessionuser", name);
     try {
         session.setAttribute("sessionuser", name);

@@ -43,7 +43,7 @@ CartHandler()
         }
         else if(req.getMethod().equalsIgnoreCase("POST"))
         {
-            String action = (String)req.getParameter("action");
+            String action = req.getParameter("action");
             if (session.getAttribute("totalPrice") == null) {
                 session.setAttribute("totalPrice", 0);
             }
@@ -102,7 +102,7 @@ CartHandler()
                 session.setAttribute("cartlist", tempList);
             } else {
                 List<itemBean> cartList = new ArrayList<>();
-                cartList = (List)session.getAttribute("cartList");
+                cartList = (List<itemBean>)session.getAttribute("cartList");
                 session.setAttribute("cartList", tempList.addAll(cartList));
             }
               session.setAttribute("cartList", tempList);
@@ -118,7 +118,7 @@ CartHandler()
         String name = (String)session.getAttribute("sessionuser");
         Connection conn = getConnection(false, dbConn); 
         List<itemBean> cartList = new ArrayList<>();
-        cartList = (List)session.getAttribute("cartList");
+        cartList = (List<itemBean>)session.getAttribute("cartList");
         int totalSpent= 0;
         while (cartList.isEmpty() == false){
             int sellerTotal = 0;
@@ -221,7 +221,7 @@ CartHandler()
         HttpSession session = req.getSession();
         int totalPrice = (int)session.getAttribute("totalPrice");
         List<itemBean> tempList = new ArrayList<>();
-        tempList = (List)session.getAttribute("cartList");
+        tempList = (List<itemBean>)session.getAttribute("cartList");
         int i = 0;
         if (tempList == null) {
             System.out.println("cartlist is null");

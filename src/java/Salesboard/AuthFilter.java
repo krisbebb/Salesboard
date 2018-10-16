@@ -32,7 +32,7 @@ public class AuthFilter implements Filter {
             HttpServletResponse res = (HttpServletResponse) response;
             HttpSession session = req.getSession();
             String sessionUser = (String)session.getAttribute("sessionuser");
-            String requestUser = (String)req.getParameter("username");
+            String requestUser = req.getParameter("username");
            if ((sessionUser.equals(requestUser) == false) && !(requestUser.equals(null))){
                 res.sendRedirect(req.getContextPath() + "/login.jsp");
                 return;

@@ -41,7 +41,7 @@ ItemHandler()
             Connection conn = getConnection(false, dbConn); 
             String name = (String)session.getAttribute("sessionuser");
             try {
-                String action =(String)req.getParameter("action");
+                String action = req.getParameter("action");
                 if (req.getParameter("edit")!=null) {
                     action = "edit";
                 } else if (req.getParameter("add")!=null) {

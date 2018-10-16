@@ -109,7 +109,7 @@ AllItemsHandler()
              String dbConn = (String)session.getAttribute("dbConn"); 
             Connection conn = getConnection(false, dbConn);
         try {
-            String name = (String) req.getParameter("username");
+            String name = req.getParameter("username");
             PreparedStatement allItems = conn.prepareStatement("select * from items ");
             ResultSet rs = allItems.executeQuery();
             List<itemBean> itemList = new ArrayList<>();
