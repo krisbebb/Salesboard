@@ -31,81 +31,68 @@ SellerHandler()
  @Override
    public String handleRequest(HttpServletRequest req, HttpServletResponse resp) throws Exception
       //Create instance of data access class (Just like in the first assignment)
-   {
-       HttpSession session = req.getSession();
-       String dbConn = (String)session.getAttribute("dbConn");
+    {
+        HttpSession session = req.getSession();
+        String dbConn = (String)session.getAttribute("dbConn");
       
-      if(req.getMethod().equalsIgnoreCase("GET"))
-      {
-        
-          System.out.println("WE are in sellerHandler GET");
-//           HttpSession session = req.getSession();
-          String name = (String)session.getAttribute("sessionuser");
-          Connection conn = getConnection(false, dbConn);
-        try {
-            
-           
-            System.out.println("sessionuser: " + session.getAttribute("sessionuser"));
-            System.out.println("request parameter username: " + name);
-
-         PreparedStatement sellerItems = conn.prepareStatement("select * from items " + 
+        if(req.getMethod().equalsIgnoreCase("GET"))
+        {
+            System.out.println("WE are in sellerHandler GET");
+            String name = (String)session.getAttribute("sessionuser");
+            Connection conn = getConnection(false, dbConn);
+            try {
+                System.out.println("sessionuser: " + session.getAttribute("sessionuser"));
+                System.out.println("request parameter username: " + name);
+                PreparedStatement sellerItems = conn.prepareStatement("select * from items " + 
                     "where seller = ?");
-            sellerItems.setString(1, name);
-            ResultSet rs = sellerItems.executeQuery();
-            List<itemBean> sellerList = new ArrayList<>();
-            while (rs.next()) {
-                System.out.println("Printing result...");
-                int id = rs.getInt("id");
-                String seller = rs.getString("seller");
-                String item = rs.getString("item");
-                String description = rs.getString("description");
-                int quantity = rs.getInt("quantity");
-                int price = rs.getInt("price");
-               
-                itemBean itemB = new itemBean(id, seller, item, description,quantity, price);
-                
-                      sellerList.add(itemB);
-                System.out.println("\tID: " + itemB.getId() +
+                sellerItems.setString(1, name);
+                ResultSet rs = sellerItems.executeQuery();
+                List<itemBean> sellerList = new ArrayList<>();
+                while (rs.next()) {
+                    System.out.println("Printing result...");
+                    int id = rs.getInt("id");
+                    String seller = rs.getString("seller");
+                    String item = rs.getString("item");
+                    String description = rs.getString("description");
+                    int quantity = rs.getInt("quantity");
+                    int price = rs.getInt("price");
+                    itemBean itemB = new itemBean(id, seller, item, description,quantity, price);
+                          sellerList.add(itemB);
+                    System.out.println("\tID: " + itemB.getId() +
                         ", seller: " + itemB.getSeller() + 
                        ", item: " + itemB.getItem() +
                         ", description: " + itemB.getDescription() + 
                         ", quantity: " + itemB.getQuantity() +
                         ", price: " + itemB.getPrice());
-            }
-              req.setAttribute("sellerList", sellerList);
-              
+                }
+                req.setAttribute("sellerList", sellerList);
                 PreparedStatement buyerItems = conn.prepareStatement("select * from sellers " + 
                     "where seller = ?");
-            buyerItems.setString(1, name);
-            ResultSet rsb = buyerItems.executeQuery();
-            List<sellerBean> buyerList = new ArrayList<>();
-            while (rsb.next()) {
-                System.out.println("Printing result...");
-             
-                String buyer = rsb.getString("buyer");
-                  int total_spent = rsb.getInt("total_spent");
-               
-                sellerBean sellerBean = new sellerBean(name, buyer, total_spent);
-                
-                      buyerList.add(sellerBean);
-                System.out.println("\tSeller: " + sellerBean.getSeller() +
-                        ", seller: " + sellerBean.getBuyer() + 
-                       ", item: " + sellerBean.getTotal_spent());
+                buyerItems.setString(1, name);
+                ResultSet rsb = buyerItems.executeQuery();
+                List<sellerBean> buyerList = new ArrayList<>();
+                while (rsb.next()) {
+                    System.out.println("Printing result...");
+                    String buyer = rsb.getString("buyer");
+                    int total_spent = rsb.getInt("total_spent");
+                    sellerBean sellerBean = new sellerBean(name, buyer, total_spent);
+                    buyerList.add(sellerBean);
+                    System.out.println("\tSeller: " + sellerBean.getSeller() +
+                            ", seller: " + sellerBean.getBuyer() + 
+                           ", item: " + sellerBean.getTotal_spent());
+                }
+                req.setAttribute("buyerList", buyerList);
             }
-              req.setAttribute("buyerList", buyerList);
-        }
-        finally {
-            conn.close();
-          }  
+             finally {
+                conn.close();
+            }  
       }
       else if(req.getMethod().equalsIgnoreCase("POST"))
       {
-        
           System.out.println("WE are in sellerHandler POST");
       }
        return "/userHome.jsp";
    }
-
     
     private Connection getConnection(boolean createDatabase, String dbConn) throws SQLException {
     checkDriverLoaded();

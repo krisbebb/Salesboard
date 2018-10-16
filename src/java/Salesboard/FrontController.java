@@ -101,7 +101,6 @@ public class FrontController extends HttpServlet {
   {
      //Here we define which java classes handle which requests
         pathsToHandlers.put("/userDetails.jsp", "Salesboard.EditUserHandler");
-//        pathsToHandlers.put("/showUser", "Salesboard.ShowUserHandler");
         pathsToHandlers.put("/login", "Salesboard.LoginHandler");
         pathsToHandlers.put("/allItemsReport", "Salesboard.AllItemsHandler");
         pathsToHandlers.put("/sellerReport", "Salesboard.SellerHandler");
@@ -112,8 +111,6 @@ public class FrontController extends HttpServlet {
         pathsToHandlers.put("/checkout", "Salesboard.CartHandler");
         pathsToHandlers.put("/searchQuery", "Salesboard.AllItemsHandler");
         pathsToHandlers.put("/admin", "Salesboard.AllItemsHandler");
-        
-     
   }
   
   @Override
@@ -149,31 +146,19 @@ public class FrontController extends HttpServlet {
     String path = request.getPathInfo();
     String handlerClass = pathsToHandlers.get(path);
     String dbConn = getServletContext().getInitParameter("dbConn");
-          System.out.println("request path is :"+ path + " handerClass is: " + handlerClass);
-      System.out.println("db path is: "+ dbConn);
-//      HttpSession session = request.getSession();
-//      session.setAttribute("dbConn", dbConn);
-   
+    System.out.println("request path is :"+ path + " handerClass is: " + handlerClass);
+    System.out.println("db path is: "+ dbConn);
     Handler handler = getHandlerInstance(handlerClass);
-      String viewPath = handler.handleRequest(request, response);
-      
-      
-        System.out.println("viewPath is: " + viewPath + "\n");
-      if (viewPath != null) {
+    String viewPath = handler.handleRequest(request, response);
+    System.out.println("viewPath is: " + viewPath + "\n");
+    if (viewPath != null) {
         RequestDispatcher rd=request.getRequestDispatcher(viewPath); 
-        
-      
         rd.forward(request, response);
-        
-      
-      }
-      System.out.println("We have null and got here");
-      System.out.println(request.getPathInfo());
-      
-//      this.getServletContext().getRequestDispatcher("/view.jsp");
-     
-      
+    }
+    System.out.println("We have null and got here");
+    System.out.println(request.getPathInfo());
   }
+  
 private Handler getHandlerInstance(String handlerClassName) throws ServletException
   {
     try

@@ -33,168 +33,133 @@ ItemHandler()
  @Override
    public String handleRequest(HttpServletRequest req, HttpServletResponse resp) throws Exception
       //Create instance of data access class (Just like in the first assignment)
-   {
-       HttpSession session = req.getSession();
-       String dbConn = (String)session.getAttribute("dbConn");
-      if(req.getMethod().equalsIgnoreCase("GET"))
-      {
-      
-       
-          
-           System.out.println("WE are in itemHandler GET");
-           Connection conn = getConnection(false, dbConn); 
-//              HttpSession session = req.getSession();
-           String name = (String)session.getAttribute("sessionuser");
-           try {
-          
-            
-            String action =(String)req.getParameter("action");
-          
-            if (req.getParameter("edit")!=null) {
-                action = "edit";
-            } else if (req.getParameter("add")!=null) {
-                action = "add";
-            } else if (req.getParameter("delete")!=null) {
-                action = "delete";
-            }
-            System.out.println("action is: " + action);
-            System.out.println("sessionuser parameter: " + name);
-            
-            if (action == "edit") {
-//               
-                int id = Integer.parseInt(req.getParameter("itemId"));
-                System.out.println("ItemId is: " + id);
-                 PreparedStatement getItem = conn.prepareStatement("select * from items "
-                         + "where id = ?");
-            getItem.setInt(1, id);
-            ResultSet rs = getItem.executeQuery();
-            while (rs.next()) {
-                String seller = name;
-                String item = rs.getString("item");
-                String description = rs.getString("description");
-                
-                int quantity = rs.getInt("quantity");
-                int price = rs.getInt("price");
-               
-                itemBean itemB = new itemBean(id, seller, item, description,quantity, price);
-                 req.setAttribute("itemBean", itemB);
-            }
-                return "/editItem.jsp";
-            }
-            
-            if (action == "add"){
-                // redirect to edit item details?
-                return "/addItem.jsp";
-            }
-            
-            if (action == "delete"){
-                int id = Integer.parseInt(req.getParameter("itemId"));
-                System.out.println("Deleting item... " + id);
-                 PreparedStatement deleteItem = conn.prepareStatement("delete from items "
-                    + "where id = ?");
-            deleteItem.setInt(1, id);
-            deleteItem.executeUpdate();
-            }
-            
-             if (action.equals("view")){
-                 int id = Integer.parseInt(req.getParameter("itemId"));
-                System.out.println("ItemId is: " + id);
-                 PreparedStatement getItem = conn.prepareStatement("select * from items "
-                         + "where id = ?");
-            getItem.setInt(1, id);
-            ResultSet rs = getItem.executeQuery();
-            while (rs.next()) {
-                String seller = name;
-                String item = rs.getString("item");
-                String description = rs.getString("description");
-                
-                int quantity = rs.getInt("quantity");
-                int price = rs.getInt("price");
-               
-                itemBean itemB = new itemBean(id, seller, item, description,quantity, price);
-                 req.setAttribute("itemBean", itemB);
-                 return "/showItem.jsp";
-            }
-             }
-        }
-        finally {
-            conn.close();
-          }  
-           return "login?username=" + name;
-      }
-      else if(req.getMethod().equalsIgnoreCase("POST"))
-      {
-           System.out.println("WE are in itemHandler POST");
-         
+    {
+        HttpSession session = req.getSession();
+        String dbConn = (String)session.getAttribute("dbConn");
+        if(req.getMethod().equalsIgnoreCase("GET"))
+        {
+            System.out.println("WE are in itemHandler GET");
             Connection conn = getConnection(false, dbConn); 
-//             HttpSession session = req.getSession();
             String name = (String)session.getAttribute("sessionuser");
-           
-//        RequestDispatcher dispatch = req.getRequestDispatcher("sellerReport?username=" + name);
-//        dispatch.forward(req, resp);
-            
-            
+            try {
+                String action =(String)req.getParameter("action");
+                if (req.getParameter("edit")!=null) {
+                    action = "edit";
+                } else if (req.getParameter("add")!=null) {
+                    action = "add";
+                } else if (req.getParameter("delete")!=null) {
+                    action = "delete";
+                }
+                System.out.println("action is: " + action);
+                System.out.println("sessionuser parameter: " + name);
+                if (action == "edit") {
+                    int id = Integer.parseInt(req.getParameter("itemId"));
+                    System.out.println("ItemId is: " + id);
+                    PreparedStatement getItem = conn.prepareStatement("select * from items "
+                         + "where id = ?");
+                    getItem.setInt(1, id);
+                    ResultSet rs = getItem.executeQuery();
+                    while (rs.next()) {
+                        String seller = name;
+                        String item = rs.getString("item");
+                        String description = rs.getString("description");
+                        int quantity = rs.getInt("quantity");
+                        int price = rs.getInt("price");
+                        itemBean itemB = new itemBean(id, seller, item, description,quantity, price);
+                        req.setAttribute("itemBean", itemB);
+                    }   
+                    return "/editItem.jsp";
+                }
+                if (action == "add"){
+                 // redirect to edit item details?
+                    return "/addItem.jsp";
+                }
+                if (action == "delete"){
+                    int id = Integer.parseInt(req.getParameter("itemId"));
+                    System.out.println("Deleting item... " + id);
+                    PreparedStatement deleteItem = conn.prepareStatement("delete from items "
+                        + "where id = ?");
+                    deleteItem.setInt(1, id);
+                    deleteItem.executeUpdate();
+                 }
+                if (action.equals("view")){
+                    int id = Integer.parseInt(req.getParameter("itemId"));
+                    System.out.println("ItemId is: " + id);
+                    PreparedStatement getItem = conn.prepareStatement("select * from items "
+                         + "where id = ?");
+                    getItem.setInt(1, id);
+                    ResultSet rs = getItem.executeQuery();
+                    while (rs.next()) {
+                        String seller = name;
+                        String item = rs.getString("item");
+                        String description = rs.getString("description");
+                        int quantity = rs.getInt("quantity");
+                        int price = rs.getInt("price");
+                        itemBean itemB = new itemBean(id, seller, item, description,quantity, price);
+                        req.setAttribute("itemBean", itemB);
+                        return "/showItem.jsp";
+                    }
+                }
+            }
+            finally {
+              conn.close();
+            }  
+            return "login?username=" + name;
+        }
+        else if(req.getMethod().equalsIgnoreCase("POST"))
+        {
+            System.out.println("WE are in itemHandler POST");
+            Connection conn = getConnection(false, dbConn); 
+            String name = (String)session.getAttribute("sessionuser");
             String action = req.getParameter("action");
-            
             if (action.equals("delete")){
                 int id = Integer.parseInt(req.getParameter("itemId"));
                 System.out.println("Deleting item... " + id);
-                 PreparedStatement deleteItem = conn.prepareStatement("delete from items "
+                PreparedStatement deleteItem = conn.prepareStatement("delete from items "
                     + "where id = ?");
-            deleteItem.setInt(1, id);
-            deleteItem.executeUpdate();
+                deleteItem.setInt(1, id);
+                deleteItem.executeUpdate();
                 System.out.println("we made it to delete");
-                 return "allItemsReport";
+                return "allItemsReport";
             } else {
-            String item = req.getParameter("item");
-            String seller = name;
-            String description = req.getParameter("description");
-            int quantity = Integer.parseInt(req.getParameter("quantity"));
-            int price = Integer.parseInt(req.getParameter("price"));
-            System.out.println("item, seller, description, quantity, price" + item + seller
-            + description + quantity + price );
-            
-            System.out.println("action is: " + action);
-            if (action.equals("add")) {
-                PreparedStatement addItem = conn.prepareStatement("insert into items "
-                        + "(seller, item, description, quantity, price) values "
-                        + "(?,?,?,?,?)");
-            addItem.setString(1, seller);
-            addItem.setString(2, item);
-            addItem.setString(3, description);
-            addItem.setInt(4, quantity);
-            addItem.setInt(5, price);
-            
-            
-            addItem.executeUpdate();
-                System.out.println("executing add...");
-                 
-                
-            } else if (action.equals("edit")) {
-                int id = Integer.parseInt(req.getParameter("itemId"));
-                 PreparedStatement editItem = conn.prepareStatement("update items " +
-                "  SET item = ?, description = ?, quantity = ?, price = ? " + 
+                String item = req.getParameter("item");
+                String seller = name;
+                String description = req.getParameter("description");
+                int quantity = Integer.parseInt(req.getParameter("quantity"));
+                int price = Integer.parseInt(req.getParameter("price"));
+                System.out.println("item, seller, description, quantity, price" + item + seller
+                + description + quantity + price );
+                System.out.println("action is: " + action);
+                if (action.equals("add")) {
+                    PreparedStatement addItem = conn.prepareStatement("insert into items "
+                            + "(seller, item, description, quantity, price) values "
+                            + "(?,?,?,?,?)");
+                    addItem.setString(1, seller);
+                    addItem.setString(2, item);
+                    addItem.setString(3, description);
+                    addItem.setInt(4, quantity);
+                    addItem.setInt(5, price);
+                    addItem.executeUpdate();
+                    System.out.println("executing add...");
+                } else if (action.equals("edit")) {
+                    int id = Integer.parseInt(req.getParameter("itemId"));
+                    PreparedStatement editItem = conn.prepareStatement("update items " +
+                          "  SET item = ?, description = ?, quantity = ?, price = ? " + 
                          "where id = ?");
-         
-           
-            editItem.setString(1, item);
-            editItem.setString(2, description);
-            editItem.setInt(3, quantity);
-            editItem.setInt(4, price);
-            editItem.setInt(5, id);
-            
-            
-            editItem.executeUpdate();
-                System.out.println("executing update...");
-                
-            } 
-            
+                    editItem.setString(1, item);
+                    editItem.setString(2, description);
+                    editItem.setInt(3, quantity);
+                    editItem.setInt(4, price);
+                    editItem.setInt(5, id);
+                    editItem.executeUpdate();
+                    System.out.println("executing update...");
+                } 
             }   
-             return "login?username=" + name;
-      }
-        
-    return null;
-   }
+            return "login?username=" + name;
+        }
+        return null;
+    }
+   
     private Connection getConnection(boolean createDatabase, String dbConn) throws SQLException {
     
         checkDriverLoaded();
