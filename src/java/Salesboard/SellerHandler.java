@@ -100,7 +100,7 @@ SellerHandler()
         
           System.out.println("WE are in sellerHandler POST");
       }
-       return "/sellerReport.jsp";
+       return "/userHome.jsp";
    }
 
     

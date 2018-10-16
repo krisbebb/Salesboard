@@ -10,7 +10,14 @@
          <m:nav/>
          <div class="container">
         <h1> Salesboard</h1>
-          
+        <form class="form-inline" action="searchQuery" method = "POST">
+            <div class="form-group">
+             <label for="searchform" >Search Items:</label>
+             <input type="text" class="form-control mx-3 my-3" name="query">
+             <button class="btn btn-primary" name="action" type="submit" value="search">
+                Submit</button>
+            </div>
+        </form>
     <table class="table">
         <tr>
       <TH>Id</th>
@@ -30,13 +37,16 @@
             <td><c:out value="${current.quantity}" /></td>
             <td><c:out value="${current.price}" /></td>
             <td>
+                
             <form action="viewItem" method="GET">
+                <div class="form-group">
                 <input type="hidden" name="itemId" value="${current.id}" />
                 <input class="btn btn-primary" type="submit" value="view" name="action">
+                </div>
+           </form>
                
-           
                </td>
-            </form>
+            
         </tr>
       </c:forEach>
     </table>
