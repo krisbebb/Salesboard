@@ -33,13 +33,15 @@ AllItemsHandler()
    public String handleRequest(HttpServletRequest req, HttpServletResponse resp) throws Exception
       //Create instance of data access class (Just like in the first assignment)
    {
+        HttpSession session = req.getSession();
+       String dbConn = (String)session.getAttribute("dbConn");
       if(req.getMethod().equalsIgnoreCase("GET"))
       {
            System.out.println("WE are in allItemsHandler GET");
        
-        Connection conn = getConnection(false);
+        Connection conn = getConnection(false, dbConn);
         try {
-             HttpSession session = req.getSession();
+//             HttpSession session = req.getSession();
             String name = (String) req.getParameter("username");
             System.out.println(name);
 
@@ -83,9 +85,9 @@ AllItemsHandler()
               String view = searchFilter(req, resp);
               return view;
           }
-       Connection conn = getConnection(false);
+       Connection conn = getConnection(false, dbConn);
         try {
-             HttpSession session = req.getSession();
+//             HttpSession session = req.getSession();
             String name = (String) req.getParameter("username");
             System.out.println(name);
 
@@ -123,13 +125,13 @@ AllItemsHandler()
    }
 
     
-    private Connection getConnection(boolean createDatabase) throws SQLException {
+    private Connection getConnection(boolean createDatabase, String dbConn) throws SQLException {
     checkDriverLoaded();
     String attributes = "";
     if (createDatabase) {
         attributes = ";create=true";
     }
-        Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/salesboard" + attributes);
+        Connection conn = DriverManager.getConnection(dbConn + attributes);
         return conn;
     }
 
@@ -143,7 +145,9 @@ AllItemsHandler()
     }
     private String searchFilter(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         System.out.println("SearchFilter method");
-        Connection conn = getConnection(false);
+         HttpSession session = req.getSession();
+       String dbConn = (String)session.getAttribute("dbConn");
+        Connection conn = getConnection(false, dbConn);
         String query = req.getParameter("query");
         try {
             PreparedStatement searchItems = conn.prepareStatement("select * from items " +

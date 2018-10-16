@@ -23,23 +23,27 @@ import javax.servlet.http.*;
  */
 public class ItemHandler implements Handler
 {
+    
    //It needs a no argument constructor so the front controller 
    //can instantiate it using reflection
-ItemHandler()
+  
+ItemHandler(String dbConn)
    { }
  
  @Override
    public String handleRequest(HttpServletRequest req, HttpServletResponse resp) throws Exception
       //Create instance of data access class (Just like in the first assignment)
    {
+       HttpSession session = req.getSession();
+       String dbConn = (String)session.getAttribute("dbConn");
       if(req.getMethod().equalsIgnoreCase("GET"))
       {
       
        
           
            System.out.println("WE are in itemHandler GET");
-           Connection conn = getConnection(false); 
-              HttpSession session = req.getSession();
+           Connection conn = getConnection(false, dbConn); 
+//              HttpSession session = req.getSession();
            String name = (String)session.getAttribute("sessionuser");
            try {
           
@@ -122,8 +126,8 @@ ItemHandler()
       {
            System.out.println("WE are in itemHandler POST");
          
-            Connection conn = getConnection(false); 
-             HttpSession session = req.getSession();
+            Connection conn = getConnection(false, dbConn); 
+//             HttpSession session = req.getSession();
             String name = (String)session.getAttribute("sessionuser");
            
 //        RequestDispatcher dispatch = req.getRequestDispatcher("sellerReport?username=" + name);
@@ -191,13 +195,15 @@ ItemHandler()
         
     return null;
    }
-    private Connection getConnection(boolean createDatabase) throws SQLException {
-    checkDriverLoaded();
+    private Connection getConnection(boolean createDatabase, String dbConn) throws SQLException {
+    
+        checkDriverLoaded();
     String attributes = "";
+    
     if (createDatabase) {
         attributes = ";create=true";
     }
-        Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/salesboard" + attributes);
+        Connection conn = DriverManager.getConnection(dbConn + attributes);
         return conn;
     }
 

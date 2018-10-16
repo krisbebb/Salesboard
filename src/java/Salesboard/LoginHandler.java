@@ -33,11 +33,13 @@ LoginHandler()
    public String handleRequest(HttpServletRequest req, HttpServletResponse resp) throws Exception
       //Create instance of data access class (Just like in the first assignment)
    {
+       HttpSession session = req.getSession();
+       String dbConn = (String)session.getAttribute("dbConn");
       if(req.getMethod().equalsIgnoreCase("GET"))
       {
            System.out.println("WE are in loginHandler GET");
            
-           HttpSession session = req.getSession();
+//           HttpSession session = req.getSession();
             String name = (String) req.getParameter("username");
             session.setAttribute("sessionuser", name);
            
@@ -62,7 +64,7 @@ LoginHandler()
       }
       else if(req.getMethod().equalsIgnoreCase("POST"))
       {
-            HttpSession session = req.getSession();
+//            HttpSession session = req.getSession();
             String name = (String) req.getParameter("username");
             session.setAttribute("sessionuser", name);
 //           
@@ -94,13 +96,13 @@ LoginHandler()
    }
 
     
-    private Connection getConnection(boolean createDatabase) throws SQLException {
+    private Connection getConnection(boolean createDatabase, String dbConn) throws SQLException {
     checkDriverLoaded();
     String attributes = "";
     if (createDatabase) {
         attributes = ";create=true";
     }
-        Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/salesboard" + attributes);
+        Connection conn = DriverManager.getConnection(dbConn + attributes);
         return conn;
     }
 
@@ -113,8 +115,10 @@ LoginHandler()
         }
     }
     private void sellerReport(HttpServletRequest req, HttpServletResponse resp)throws Exception{
-         Connection conn = getConnection(false);
-          HttpSession session = req.getSession();
+        HttpSession session = req.getSession();
+       String dbConn = (String)session.getAttribute("dbConn");
+        Connection conn = getConnection(false, dbConn);
+//          HttpSession session = req.getSession();
             String name = (String) req.getParameter("username");
             session.setAttribute("sessionuser", name);
             System.out.println("sessionuser: " + session.getAttribute("sessionuser"));
@@ -150,8 +154,10 @@ LoginHandler()
     }
     
     private void buyerReport(HttpServletRequest req, HttpServletResponse resp) throws Exception{
-         Connection conn = getConnection(false);
-          HttpSession session = req.getSession();
+         HttpSession session = req.getSession();
+       String dbConn = (String)session.getAttribute("dbConn");
+        Connection conn = getConnection(false, dbConn);
+//          HttpSession session = req.getSession();
             String name = (String) req.getParameter("username");
             session.setAttribute("sessionuser", name);
             System.out.println("sessionuser: " + session.getAttribute("sessionuser"));
@@ -180,8 +186,10 @@ LoginHandler()
         
     }
     private boolean checkForUser(HttpServletRequest req, HttpServletResponse resp) throws Exception{
-            Connection conn = getConnection(false);
           HttpSession session = req.getSession();
+       String dbConn = (String)session.getAttribute("dbConn");
+        Connection conn = getConnection(false, dbConn);
+//          HttpSession session = req.getSession();
             String name = (String) req.getParameter("username");
             session.setAttribute("sessionuser", name);
             System.out.println("sessionuser: " + session.getAttribute("sessionuser"));

@@ -29,14 +29,17 @@ EditUserHandler()
    public String handleRequest(HttpServletRequest req, HttpServletResponse resp) throws Exception
       //Create instance of data access class (Just like in the first assignment)
    {
+        HttpSession session = req.getSession();
+       String dbConn = (String)session.getAttribute("dbConn");
       if(req.getMethod().equalsIgnoreCase("GET"))
       {
+         
           System.out.println("WE are in editUserHandler GET");
        
            
-         HttpSession session = req.getSession();
+//         HttpSession session = req.getSession();
           String name = (String)session.getAttribute("sessionuser");
-           Connection conn = getConnection(false);
+           Connection conn = getConnection(false, dbConn);
         try {
            
            
@@ -70,9 +73,9 @@ EditUserHandler()
            System.out.println("WE are in editUserHandler POST");
       
            
-            HttpSession session = req.getSession();
+//            HttpSession session = req.getSession();
           String name = (String)session.getAttribute("sessionuser");
-           Connection conn = getConnection(false);
+           Connection conn = getConnection(false, dbConn);
                    String action = req.getParameter("action");
             try {
                 if (action.equals("edit")) {
@@ -100,13 +103,13 @@ EditUserHandler()
    }
 
     
-    private Connection getConnection(boolean createDatabase) throws SQLException {
+    private Connection getConnection(boolean createDatabase, String dbConn) throws SQLException {
     checkDriverLoaded();
     String attributes = "";
     if (createDatabase) {
         attributes = ";create=true";
     }
-        Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/salesboard" + attributes);
+        Connection conn = DriverManager.getConnection(dbConn + attributes);
         return conn;
     }
 
