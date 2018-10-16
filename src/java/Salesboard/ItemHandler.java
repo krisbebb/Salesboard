@@ -38,7 +38,6 @@ ItemHandler()
         String dbConn = (String)session.getAttribute("dbConn");
         if(req.getMethod().equalsIgnoreCase("GET"))
         {
-            System.out.println("WE are in itemHandler GET");
             Connection conn = getConnection(false, dbConn); 
             String name = (String)session.getAttribute("sessionuser");
             try {
@@ -50,11 +49,8 @@ ItemHandler()
                 } else if (req.getParameter("delete")!=null) {
                     action = "delete";
                 }
-                System.out.println("action is: " + action);
-                System.out.println("sessionuser parameter: " + name);
                 if (action == "edit") {
                     int id = Integer.parseInt(req.getParameter("itemId"));
-                    System.out.println("ItemId is: " + id);
                     PreparedStatement getItem = conn.prepareStatement("select * from items "
                          + "where id = ?");
                     getItem.setInt(1, id);
@@ -76,7 +72,6 @@ ItemHandler()
                 }
                 if (action == "delete"){
                     int id = Integer.parseInt(req.getParameter("itemId"));
-                    System.out.println("Deleting item... " + id);
                     PreparedStatement deleteItem = conn.prepareStatement("delete from items "
                         + "where id = ?");
                     deleteItem.setInt(1, id);
@@ -84,7 +79,6 @@ ItemHandler()
                  }
                 if (action.equals("view")){
                     int id = Integer.parseInt(req.getParameter("itemId"));
-                    System.out.println("ItemId is: " + id);
                     PreparedStatement getItem = conn.prepareStatement("select * from items "
                          + "where id = ?");
                     getItem.setInt(1, id);
@@ -108,18 +102,15 @@ ItemHandler()
         }
         else if(req.getMethod().equalsIgnoreCase("POST"))
         {
-            System.out.println("WE are in itemHandler POST");
             Connection conn = getConnection(false, dbConn); 
             String name = (String)session.getAttribute("sessionuser");
             String action = req.getParameter("action");
             if (action.equals("delete")){
                 int id = Integer.parseInt(req.getParameter("itemId"));
-                System.out.println("Deleting item... " + id);
                 PreparedStatement deleteItem = conn.prepareStatement("delete from items "
                     + "where id = ?");
                 deleteItem.setInt(1, id);
                 deleteItem.executeUpdate();
-                System.out.println("we made it to delete");
                 return "allItemsReport";
             } else {
                 String item = req.getParameter("item");
@@ -127,9 +118,6 @@ ItemHandler()
                 String description = req.getParameter("description");
                 int quantity = Integer.parseInt(req.getParameter("quantity"));
                 int price = Integer.parseInt(req.getParameter("price"));
-                System.out.println("item, seller, description, quantity, price" + item + seller
-                + description + quantity + price );
-                System.out.println("action is: " + action);
                 if (action.equals("add")) {
                     PreparedStatement addItem = conn.prepareStatement("insert into items "
                             + "(seller, item, description, quantity, price) values "
@@ -140,7 +128,6 @@ ItemHandler()
                     addItem.setInt(4, quantity);
                     addItem.setInt(5, price);
                     addItem.executeUpdate();
-                    System.out.println("executing add...");
                 } else if (action.equals("edit")) {
                     int id = Integer.parseInt(req.getParameter("itemId"));
                     PreparedStatement editItem = conn.prepareStatement("update items " +
@@ -152,7 +139,6 @@ ItemHandler()
                     editItem.setInt(4, price);
                     editItem.setInt(5, id);
                     editItem.executeUpdate();
-                    System.out.println("executing update...");
                 } 
             }   
             return "login?username=" + name;

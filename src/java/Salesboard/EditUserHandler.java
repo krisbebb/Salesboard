@@ -33,18 +33,15 @@ EditUserHandler()
         String dbConn = (String)session.getAttribute("dbConn");
         if(req.getMethod().equalsIgnoreCase("GET"))
         {
-            System.out.println("WE are in editUserHandler GET");
             String name = (String)session.getAttribute("sessionuser");
             
             Connection conn = getConnection(false, dbConn);
             try {
-                System.out.println(name);
                 PreparedStatement selectUser = conn.prepareStatement("select * from users " +
                     "where username = ?");
                 selectUser.setString(1, name);
                 ResultSet rs = selectUser.executeQuery();
                 while (rs.next()) {
-                    System.out.println("Printing result...");
                     String uname = rs.getString("username");
                     String fullName = rs.getString("name");
                     int age = rs.getInt("age");
@@ -52,9 +49,6 @@ EditUserHandler()
                     
                     userBean user = new userBean(uname, fullName, age, address);
                     req.setAttribute("userBean", user);
-                    System.out.println("\tUsername: " + uname +
-                          ", name: " + ", age: " + age +
-                            ", address: " + address);
                 }
             }
             finally {
@@ -64,7 +58,6 @@ EditUserHandler()
         }
         else if(req.getMethod().equalsIgnoreCase("POST"))
         {
-            System.out.println("WE are in editUserHandler POST");
             String name = (String)session.getAttribute("sessionuser");
             Connection conn = getConnection(false, dbConn);
             String action = req.getParameter("action");
@@ -83,7 +76,6 @@ EditUserHandler()
                     String fullname = req.getParameter("name");
                     while (name.isEmpty() ||fullname.isEmpty() || address.isEmpty() || (age<10))
                     {
-                        System.out.println("invalid input");
                         req.setAttribute("message", "Please complete all fields");
                         resp.sendRedirect("userDetails");
                         return null;
@@ -96,7 +88,6 @@ EditUserHandler()
                     editUser.setString(3, address);
                     editUser.setString(4, name);
                     editUser.executeUpdate();
-                    System.out.println("executing update...");
                     userBean sessionBean = new userBean(name,fullname, age, address);
                     session.setAttribute("sessionBean", sessionBean);
 //                }

@@ -37,19 +37,14 @@ LoginHandler()
         String dbConn = (String)session.getAttribute("dbConn");
         if(req.getMethod().equalsIgnoreCase("GET"))
         {
-            System.out.println("WE are in loginHandler GET");
             String name = (String) req.getParameter("username");
             if (name == null || name.isEmpty()){
                 req.setAttribute("message", "Please enter a value");
-                System.out.println("we have no username");
                 return "/login.jsp";
             }
             session.setAttribute("sessionuser", name);
-            System.out.println("sessionuser: " + session.getAttribute("sessionuser"));
-            System.out.println("request parameter username: " + name);
             boolean userExists = checkForUser(req, resp);
             if (!userExists) {
-                System.out.println("!userExists is true ie user does NOT exist");
                 return "/userDetails";
             }
            // get buyer report
@@ -62,11 +57,8 @@ LoginHandler()
         {
             String name = (String) req.getParameter("username");
             session.setAttribute("sessionuser", name);
-            System.out.println("sessionuser: " + session.getAttribute("sessionuser"));
-            System.out.println("request parameter username: " + name);
             boolean userExists = checkForUser(req, resp);
             if (!userExists) {
-                System.out.println("!userExists is true ie user does NOT exist");
                 return "userDetails";
            }
            // get buyer report
@@ -102,8 +94,6 @@ LoginHandler()
     Connection conn = getConnection(false, dbConn);
     String name = (String) req.getParameter("username");
     session.setAttribute("sessionuser", name);
-    System.out.println("sessionuser: " + session.getAttribute("sessionuser"));
-    System.out.println("request parameter username: " + name);
     try {
         PreparedStatement sellerItems = conn.prepareStatement("select * from items " + 
                    "where seller = ?");
@@ -111,7 +101,6 @@ LoginHandler()
         ResultSet rs = sellerItems.executeQuery();
         List<itemBean> sellerList = new ArrayList<>();
         while (rs.next()) {
-            System.out.println("Printing result...");
             int id = rs.getInt("id");
             String seller = rs.getString("seller");
             String item = rs.getString("item");
@@ -120,12 +109,6 @@ LoginHandler()
             int price = rs.getInt("price");
             itemBean itemB = new itemBean(id, seller, item, description,quantity, price);
                   sellerList.add(itemB);
-            System.out.println("\tID: " + itemB.getId() +
-                    ", seller: " + itemB.getSeller() + 
-                   ", item: " + itemB.getItem() +
-                    ", description: " + itemB.getDescription() + 
-                    ", quantity: " + itemB.getQuantity() +
-                    ", price: " + itemB.getPrice());
         }
         req.setAttribute("sellerList", sellerList);
     }
@@ -140,8 +123,6 @@ LoginHandler()
     Connection conn = getConnection(false, dbConn);
     String name = (String) req.getParameter("username");
     session.setAttribute("sessionuser", name);
-    System.out.println("sessionuser: " + session.getAttribute("sessionuser"));
-    System.out.println("request parameter username: " + name);
     try {
         session.setAttribute("sessionuser", name);
         PreparedStatement buyerItems = conn.prepareStatement("select * from sellers " + 
@@ -150,14 +131,10 @@ LoginHandler()
         ResultSet rsb = buyerItems.executeQuery();
         List<sellerBean> buyerList = new ArrayList<>();
         while (rsb.next()) {
-            System.out.println("Printing result...");
             String buyer = rsb.getString("buyer");
             int total_spent = rsb.getInt("total_spent");
             sellerBean sellerB = new sellerBean(name, buyer, total_spent);
             buyerList.add(sellerB);
-            System.out.println("\tID: " + sellerB.getSeller() +
-                    ", seller: " + sellerB.getBuyer() + 
-                   ", item: " + sellerB.getTotal_spent());
         }
         req.setAttribute("buyerList", buyerList);
         }  finally {
@@ -172,8 +149,6 @@ LoginHandler()
     Connection conn = getConnection(false, dbConn);
     String name = (String) req.getParameter("username");
     session.setAttribute("sessionuser", name);
-    System.out.println("sessionuser: " + session.getAttribute("sessionuser"));
-    System.out.println("request parameter username: " + name);
     try {
         session.setAttribute("sessionuser", name);
         PreparedStatement userQuery = conn.prepareStatement("select * from users " + 
@@ -181,18 +156,15 @@ LoginHandler()
         userQuery.setString(1, name);
         ResultSet rsb = userQuery.executeQuery();
         if (rsb.next()) {
-            System.out.println("User exists.");
             userBean sessionBean = new userBean(name, rsb.getString("name"), rsb.getInt("age"), rsb.getString("address"));
             session.setAttribute("sessionBean", sessionBean);
             conn.close();
             return true;
         } else {
-            System.out.println("User does NOT exist");
             PreparedStatement insertName = conn.prepareStatement("insert into users "+ 
                     "(username) values (?)");
             insertName.setString(1, name);
             insertName.executeUpdate();
-            System.out.println("executing name insert...");
             conn.close();
             return false;
         }
