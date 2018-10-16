@@ -12,7 +12,7 @@
         <h1> Edit User ${userBean.username} </h1>
           
        <form  action='userDetails.jsp' method="post">
-           <div class = "form-group">
+           <div class = "form-group my-3">
             Age: <input type="text" name="age" value="${userBean.age}">
             </div>
             <div class = "form-group">

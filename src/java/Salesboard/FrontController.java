@@ -109,6 +109,9 @@ public class FrontController extends HttpServlet {
         pathsToHandlers.put("/buyItem", "Salesboard.CartHandler");
         pathsToHandlers.put("/removeItem", "Salesboard.CartHandler");
         pathsToHandlers.put("/checkout", "Salesboard.CartHandler");
+        pathsToHandlers.put("/searchQuery", "Salesboard.AllItemsHandler");
+        
+                
 //        pathsToHandlers.put("userHome.jsp", "Salesboard.userHandler");
 //     pathsToHandlers.put("/movieDetails", "Salesboard.MovieDetails");
      

@@ -58,7 +58,7 @@ LoginHandler()
               buyerReport(req, resp);
               
        
-          return "/sellerReport.jsp";
+          return "/userHome.jsp";
       }
       else if(req.getMethod().equalsIgnoreCase("POST"))
       {
@@ -86,7 +86,7 @@ LoginHandler()
               buyerReport(req, resp);
               
        
-          return "/sellerReport.jsp";
+          return "/userHome.jsp";
  
        
       }
