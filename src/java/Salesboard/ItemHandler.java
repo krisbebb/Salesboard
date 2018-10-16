@@ -131,6 +131,17 @@ ItemHandler()
             
             
             String action = req.getParameter("action");
+            
+            if (action.equals("delete")){
+                int id = Integer.parseInt(req.getParameter("itemId"));
+                System.out.println("Deleting item... " + id);
+                 PreparedStatement deleteItem = conn.prepareStatement("delete from items "
+                    + "where id = ?");
+            deleteItem.setInt(1, id);
+            deleteItem.executeUpdate();
+                System.out.println("we made it to delete");
+                 return "allItemsReport";
+            } else {
             String item = req.getParameter("item");
             String seller = name;
             String description = req.getParameter("description");
@@ -153,6 +164,8 @@ ItemHandler()
             
             addItem.executeUpdate();
                 System.out.println("executing add...");
+                 
+                
             } else if (action.equals("edit")) {
                 int id = Integer.parseInt(req.getParameter("itemId"));
                  PreparedStatement editItem = conn.prepareStatement("update items " +
@@ -169,12 +182,14 @@ ItemHandler()
             
             editItem.executeUpdate();
                 System.out.println("executing update...");
-            }
+                
+            } 
             
-            return "login?username=" + name;
-   }
-         return null;
-   
+            }   
+             return "login?username=" + name;
+      }
+        
+    return null;
    }
     private Connection getConnection(boolean createDatabase) throws SQLException {
     checkDriverLoaded();
