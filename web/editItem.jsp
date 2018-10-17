@@ -11,5 +11,8 @@
         <div class="container">
         <h1>Edit Item</h1>
             <m:editItemForm itemBean="${itemBean}"/>
+            <div class="alert-danger" role="alert">
+            ${message}
+            </div>
         </div>
         <m:footer/>
