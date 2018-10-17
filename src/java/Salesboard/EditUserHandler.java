@@ -33,52 +33,64 @@ EditUserHandler()
         String dbConn = (String)session.getAttribute("dbConn");
         if(req.getMethod().equalsIgnoreCase("GET"))
         {
-            System.out.println("WE are in editUserHandler GET");
-            String name = (String)session.getAttribute("sessionuser");
+            if (session.getAttribute("error") != null){
+                req.setAttribute("message", "Please fill in all fields");
+            }
             Connection conn = getConnection(false, dbConn);
             try {
-                System.out.println(name);
+                String name = (String)session.getAttribute("sessionuser");
                 PreparedStatement selectUser = conn.prepareStatement("select * from users " +
                     "where username = ?");
                 selectUser.setString(1, name);
                 ResultSet rs = selectUser.executeQuery();
                 while (rs.next()) {
-                    System.out.println("Printing result...");
                     String uname = rs.getString("username");
                     String fullName = rs.getString("name");
                     int age = rs.getInt("age");
                     String address = rs.getString("address");
                     userBean user = new userBean(uname, fullName, age, address);
                     req.setAttribute("userBean", user);
-                    System.out.println("\tUsername: " + uname +
-                          ", name: " + ", age: " + age +
-                            ", address: " + address);
                 }
             }
             finally {
             conn.close();
-             }  
-             return "/userDetails.jsp";
+            }  
+            return "/userDetails.jsp";
         }
         else if(req.getMethod().equalsIgnoreCase("POST"))
         {
-            System.out.println("WE are in editUserHandler POST");
             String name = (String)session.getAttribute("sessionuser");
             Connection conn = getConnection(false, dbConn);
             String action = req.getParameter("action");
+            
+            if (action.equals("cancel")){
+                resp.sendRedirect("sellerReport");
+            }
+            int age = 0;
             try {
-                if (action.equals("edit")) {
-                    int age = Integer.parseInt(req.getParameter("age"));
+                    if (isNumber(req.getParameter("age"))){
+                        age = Integer.parseInt(req.getParameter("age"));
+                    }
+                    
                     String address = req.getParameter("address");
+                    String fullname = req.getParameter("name");
+                    while (name.isEmpty() ||fullname.isEmpty() || address.isEmpty() || (age<10))
+                    {
+                        session.setAttribute("error", "Invalid input");
+                        resp.sendRedirect("userDetails");
+                        return null;
+                    }
                     PreparedStatement editUser = conn.prepareStatement("update users " +
-                    "  SET age = ?, address = ? " + 
+                    "  SET name = ?, age = ?, address = ? " + 
                              "where username = ?");
-                    editUser.setInt(1, age);
-                    editUser.setString(2, address);
-                    editUser.setString(3, name);
+                    editUser.setString(1, fullname);
+                    editUser.setInt(2, age);
+                    editUser.setString(3, address);
+                    editUser.setString(4, name);
                     editUser.executeUpdate();
-                    System.out.println("executing update...");
-                }
+                    userBean sessionBean = new userBean(name,fullname, age, address);
+                    session.setAttribute("sessionBean", sessionBean);
+//                }
             }
             finally {
              conn.close();
@@ -107,6 +119,18 @@ EditUserHandler()
             throw new RuntimeException("An error occrred loading jdbc driver", ex);
         }
     }
+private boolean isNumber(String value)
+{
+  try
+  {
+    Double.valueOf(value);
+    return true;
+  }
+  catch (NumberFormatException numx)
+  {
+    return false;
+  }
+}
 
 }
 

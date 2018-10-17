@@ -4,6 +4,8 @@
     Author     : kris
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ attribute name="sessionBean" required="true" rtexprvalue="true" type="Salesboard.userBean"%>
+
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
 <ul class="nav">
@@ -14,7 +16,7 @@
     <a class="nav-link" href="./allItemsReport">Salesboard</a>
     </li>
     <li class="nav-item">
-    <a class="nav-link" href="./userDetails.jsp">Edit User Details</a>
+    <a class="nav-link" href="./userDetails">Edit User Details</a>
     </li>
     <li class="nav-item">
     <a class="nav-link" href="./buyItem">Shopping Cart</a>
@@ -25,8 +27,14 @@
    
     <c:if test="${sessionScope.adminUser == sessionScope.sessionuser}">
         <li class="nav-item">
-        <a class="nav-link" href="./admin">Admin</a>
+        <a class="nav-link" href="#">Admin</a>
         </li>
-</c:if>
-        </ul>
-  </nav>
+    </c:if>
+</ul>
+
+ ${sessionBean.name}
+
+ ${sessionBean.address}
+    
+      
+</nav>

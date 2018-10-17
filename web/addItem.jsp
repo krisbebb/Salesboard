@@ -6,18 +6,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="m" tagdir="/WEB-INF/tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<m:header/>
-         <m:nav/>
+
+    <m:header title="Add Item"/>
+    <m:nav sessionBean="${sessionScope["sessionBean"]}"/>
+    <div class="container">
         <h1>Add Item</h1>
-        
-        <form action='editItem' method="post">
-            item: <input type="text" name="item">
-            description: <input type="text" name="description">
-            quantity:  <input type="text" name="quantity">
-            price:  <input type="text" name="price">
-            <button class="btn btn-primary" name="action" type="submit" value="add">
-                Add Item</button>
-            <button class="btn btn-primary" name="action"  type="submit" method="post" value="cancel">
-                Cancel</button>
-        </form>
-        <m:footer/>
+        <m:addItemForm/>
+    </div>
+    <m:footer/>

@@ -3,21 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/kris/Ass2_Salesboard/src/java/Salesboard/ItemHandler.java</file>
-            <file>file:/Users/kris/Ass2_Salesboard/web/salesBoard.jsp</file>
-            <file>file:/Users/kris/Ass2_Salesboard/web/WEB-INF/web.xml</file>
-            <file>file:/Users/kris/Ass2_Salesboard/web/showItem.jsp</file>
-            <file>file:/Users/kris/Ass2_Salesboard/src/java/Salesboard/LoginHandler.java</file>
-            <file>file:/Users/kris/Ass2_Salesboard/web/login.jsp</file>
-            <file>file:/Users/kris/Ass2_Salesboard/web/WEB-INF/tags/nav.tag</file>
-            <file>file:/Users/kris/Ass2_Salesboard/web/editItem.jsp</file>
-            <file>file:/Users/kris/Ass2_Salesboard/src/java/Salesboard/CartHandler.java</file>
+            <file>file:/Users/kris/Ass2_Salesboard/src/java/Salesboard/Handler.java</file>
+            <file>file:/Users/kris/Ass2_Salesboard/src/java/Salesboard/itemBean.java</file>
             <file>file:/Users/kris/Ass2_Salesboard/src/java/Salesboard/SellerHandler.java</file>
-            <file>file:/Users/kris/Ass2_Salesboard/src/java/Salesboard/FrontController.java</file>
-            <file>file:/Users/kris/Ass2_Salesboard/src/java/Salesboard/EditUserHandler.java</file>
-            <file>file:/Users/kris/Ass2_Salesboard/web/userDetails.jsp</file>
+            <file>file:/Users/kris/Ass2_Salesboard/web/WEB-INF/tags/itemsReport.tag</file>
+            <file>file:/Users/kris/Ass2_Salesboard/src/java/Salesboard/LoginHandler.java</file>
             <file>file:/Users/kris/Ass2_Salesboard/web/userHome.jsp</file>
-            <file>file:/Users/kris/Ass2_Salesboard/src/java/Salesboard/AllItemsHandler.java</file>
+            <file>file:/Users/kris/Ass2_Salesboard/web/WEB-INF/tags/userDetailsForm.tag</file>
+            <file>file:/Users/kris/Ass2_Salesboard/web/WEB-INF/tags/showItemForm.tag</file>
         </group>
     </open-files>
 </project-private>
