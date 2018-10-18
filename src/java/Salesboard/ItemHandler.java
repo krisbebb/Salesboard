@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
@@ -133,25 +134,43 @@ ItemHandler()
                 deleteItem.executeUpdate();
                 return "allItemsReport";
             } else {
-                String item = req.getParameter("item");
+                 String item = req.getParameter("item");
                 String seller = name;
                 String description = req.getParameter("description");
                 int quantity = Integer.parseInt(req.getParameter("quantity"));
                 int price = Integer.parseInt(req.getParameter("price"));
+               
                 if (action.equals("add")) {
                     
                     // make bean from req params (above)
+                    itemBean itemB = new itemBean(0, seller, item, description,quantity, price);
+                    req.setAttribute("itemBean", itemB);
                     // set session item bean
                     // redirect to editview (get)
+                   
                     PreparedStatement addItem = conn.prepareStatement("insert into items "
                             + "(seller, item, description, quantity, price) values "
-                            + "(?,?,?,?,?)");
+                            + "(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
                     addItem.setString(1, seller);
                     addItem.setString(2, item);
                     addItem.setString(3, description);
                     addItem.setInt(4, quantity);
                     addItem.setInt(5, price);
                     addItem.executeUpdate();
+                    ResultSet rs = addItem.getGeneratedKeys();
+                    while (rs.next()) {
+                    long id = rs.getLong(1);
+                    System.out.println("Inserted ID " + id); // display inserted record
+                     req.setAttribute("itemBean.id", id);
+                    }
+//                    PreparedStatement getId = conn.prepareStatement("select @@IDENTITY");
+//                    ResultSet rs = getId.executeQuery();
+//                    while (rs.next()){
+//                    int id =  rs.getInt("id");
+//                        }
+                   
+                   return "/editItem.jsp";
+            
                 } else if (action.equals("edit")) {
                     
                     // move add here 
@@ -165,6 +184,7 @@ ItemHandler()
                         System.out.println("Empty description");
                         session.setAttribute("message", "Please enter a description");
                         resp.sendRedirect("editItem?itemId=" +id + "&edit=edit");
+                        return null;
                     }
                     int id = Integer.parseInt(req.getParameter("itemId"));
                     PreparedStatement editItem = conn.prepareStatement("update items " +
@@ -177,9 +197,10 @@ ItemHandler()
                     editItem.setInt(5, id);
                     editItem.executeUpdate();
                     resp.sendRedirect("sellerReport");
+                    return null;
                 } 
             }   
-            return "login?username=" + name;
+//            return "login?username=" + name;
         }
         return null;
     }
