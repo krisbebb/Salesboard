@@ -12,7 +12,8 @@
         <h1>Edit Item</h1>
             <m:editItemForm itemBean="${itemBean}"/>
             <div class="alert-danger" role="alert">
-            ${message}
+                <c:out value="${sessionScope.message}" />
+                <c:remove var="message" scope="session" />
             </div>
         </div>
         <m:footer/>

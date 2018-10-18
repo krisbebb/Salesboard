@@ -129,6 +129,12 @@ ItemHandler()
                     addItem.setInt(5, price);
                     addItem.executeUpdate();
                 } else if (action.equals("edit")) {
+                    if (description.isEmpty()){
+                        int id = Integer.parseInt(req.getParameter("itemId"));
+                        System.out.println("Empty description");
+                        session.setAttribute("message", "Please enter a description");
+                        resp.sendRedirect("editItem?itemId=" +id + "&edit=edit");
+                    }
                     int id = Integer.parseInt(req.getParameter("itemId"));
                     PreparedStatement editItem = conn.prepareStatement("update items " +
                           "  SET item = ?, description = ?, quantity = ?, price = ? " + 
@@ -139,6 +145,7 @@ ItemHandler()
                     editItem.setInt(4, price);
                     editItem.setInt(5, id);
                     editItem.executeUpdate();
+                    resp.sendRedirect("sellerReport");
                 } 
             }   
             return "login?username=" + name;
