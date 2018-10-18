@@ -18,7 +18,7 @@
             price:  <input type="text" name="price">
             </div>
             <div class="form-group">
-            <button class="btn btn-primary mx-2 my-3" name="action" type="submit" value="add">
+            <button class="btn btn-primary mx-2 my-3" name="action" method="post" type="submit" value="add">
                 Add Item</button>
             <button class="btn btn-primary mx-2 my-3" name="action"  type="submit" method="post" value="cancel">
                 Cancel</button>

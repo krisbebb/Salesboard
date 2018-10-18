@@ -111,6 +111,7 @@ public class FrontController extends HttpServlet {
         pathsToHandlers.put("/checkout", "Salesboard.CartHandler");
         pathsToHandlers.put("/searchQuery", "Salesboard.AllItemsHandler");
         pathsToHandlers.put("/admin", "Salesboard.AllItemsHandler");
+        pathsToHandlers.put("/createItem", "Salesboard.ItemHandler");
   }
   
   @Override

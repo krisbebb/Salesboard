@@ -31,6 +31,6 @@
     </tr>
     </c:forEach>
     </table>
-        <form action="editItem" method="GET">
-            <input class="btn btn-primary" type="submit" value="add item" name="add"></td>
+        <form action="createItem" method="GET">
+            <input class="btn btn-primary" type="submit" value="add" name="add"></td>
         </form>

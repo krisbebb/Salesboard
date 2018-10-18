@@ -42,6 +42,7 @@ ItemHandler()
             String name = (String)session.getAttribute("sessionuser");
             try {
                 String action = req.getParameter("action");
+                System.out.println("action: " + action);
                 if (req.getParameter("edit")!=null) {
                     action = "edit";
                 } else if (req.getParameter("add")!=null) {
@@ -63,12 +64,23 @@ ItemHandler()
                         int price = rs.getInt("price");
                         itemBean itemB = new itemBean(id, seller, item, description,quantity, price);
                         req.setAttribute("itemBean", itemB);
+                        // set to session here (maybe -- already in request
                     }   
                     return "/editItem.jsp";
                 }
                 if (action == "add"){
-                 // redirect to edit item details?
+          
+                    // create session bean for item (with no ID)
+                    // return /editItem.jsp
+                    // /editItem routine to check if exists (does item
+                    // bean have id?) and insert if not, SELECT SCOPE_IDENTITY() as id(?);
+                    // update if exists
+                    System.out.println("item is " + req.getParameter("item"));
+                    System.out.println("we got to add");
+//                    resp.sendRedirect("editItem");
+//                    return null;
                     return "/addItem.jsp";
+
                 }
                 if (action == "delete"){
                     int id = Integer.parseInt(req.getParameter("itemId"));
@@ -78,6 +90,9 @@ ItemHandler()
                     deleteItem.executeUpdate();
                  }
                 if (action.equals("view")){
+                    // this section may not be needed
+                    // showView accessed from all items screen view
+                    
                     int id = Integer.parseInt(req.getParameter("itemId"));
                     PreparedStatement getItem = conn.prepareStatement("select * from items "
                          + "where id = ?");
@@ -105,6 +120,11 @@ ItemHandler()
             Connection conn = getConnection(false, dbConn); 
             String name = (String)session.getAttribute("sessionuser");
             String action = req.getParameter("action");
+            System.out.println("action is: " + action);
+            System.out.println("parameter add: " + req.getParameter("add"));
+            if (req.getParameter("add")!=null) {
+                    action = "add";
+                }
             if (action.equals("delete")){
                 int id = Integer.parseInt(req.getParameter("itemId"));
                 PreparedStatement deleteItem = conn.prepareStatement("delete from items "
@@ -119,6 +139,10 @@ ItemHandler()
                 int quantity = Integer.parseInt(req.getParameter("quantity"));
                 int price = Integer.parseInt(req.getParameter("price"));
                 if (action.equals("add")) {
+                    
+                    // make bean from req params (above)
+                    // set session item bean
+                    // redirect to editview (get)
                     PreparedStatement addItem = conn.prepareStatement("insert into items "
                             + "(seller, item, description, quantity, price) values "
                             + "(?,?,?,?,?)");
@@ -129,6 +153,13 @@ ItemHandler()
                     addItem.setInt(5, price);
                     addItem.executeUpdate();
                 } else if (action.equals("edit")) {
+                    
+                    // move add here 
+                    // if bean has id, then update record with that id -- fine
+                    // if bean has no ID, add to db, set bean id
+                    // clear session item bean
+                    // redirect sellerreport
+                    
                     if (description.isEmpty()){
                         int id = Integer.parseInt(req.getParameter("itemId"));
                         System.out.println("Empty description");

@@ -7,7 +7,7 @@
 <%@ taglib prefix="m" tagdir="/WEB-INF/tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
         <m:header title="Edit Item"/>
-        <m:nav sessionBean="${sessionScope["sessionBean"]}"/>
+        <m:nav sessionBean="${sessionScope.sessionBean}"/>
         <div class="container">
         <h1>Edit Item</h1>
             <m:editItemForm itemBean="${itemBean}"/>

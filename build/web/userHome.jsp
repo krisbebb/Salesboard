@@ -7,7 +7,7 @@
 <%@ taglib prefix="m" tagdir="/WEB-INF/tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
         <m:header title="Home"/>
-        <m:nav sessionBean="${sessionScope["sessionBean"]}"/>
+        <m:nav sessionBean="${sessionScope.sessionBean}"/>
         <div class="container">
         <h1>Home Page for ${sessionScope["sessionuser"]} </h1>
         <hr>
